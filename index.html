@@ -265,14 +265,13 @@
     #hero {
       min-height: 100vh;
       display: flex;
-      flex-direction: column;
-      justify-content: center;
       align-items: center;
-      padding: 8rem var(--gutter) 6rem;
+      justify-content: space-between;
+      padding: 8rem 5% 6rem;
+      gap: 50px;
+      box-sizing: border-box;
       position: relative;
       overflow: hidden;
-      gap: 0;
-      text-align: center;
     }
 
     .hero-grid {
@@ -346,26 +345,32 @@
       color: var(--on-surface);
     }
 
-    .hero-left {
-      position: relative;
-      z-index: 2;
-      max-width: 760px;
-      width: 100%;
+    .hero-text {
+      flex: 1;
+      max-width: 600px;
       display: flex;
       flex-direction: column;
-      align-items: center;
-    }
-    .hero-right {
+      align-items: flex-start;
+      text-align: left;
       position: relative;
       z-index: 2;
-      order: -1;
-      margin-bottom: 2.5rem;
     }
-    .hero-meta { justify-content: center; }
-    .hero-tags { justify-content: center; }
-    .hero-actions { justify-content: center; }
-    .hero-rule { margin-left: auto; margin-right: auto; }
-    .hero-desc { margin-left: auto; margin-right: auto; }
+    .hero-visual {
+      flex: 1.5;
+      height: 70vh;
+      width: 100%;
+      position: relative;
+      border-radius: 12px;
+      overflow: hidden;
+      z-index: 2;
+      opacity: 0;
+      animation: slideUp .8s .5s ease forwards;
+    }
+    .hero-meta { justify-content: flex-start; }
+    .hero-tags { justify-content: flex-start; }
+    .hero-actions { justify-content: flex-start; }
+    .hero-rule { margin-left: 0; margin-right: 0; }
+    .hero-desc { margin-left: 0; margin-right: 0; text-align: left; }
 
     .hero-status {
       display: inline-flex;
@@ -395,7 +400,9 @@
 
     .hero-name {
       font-family: var(--font-head);
-      font-size: clamp(2.8rem, 6vw, 5.5rem);
+      font-size: clamp(2.5rem, 4vw, 4.5rem);
+      white-space: nowrap;
+      margin: 0 0 10px 0;
       font-weight: 700;
       line-height: .95;
       letter-spacing: -0.04em;
@@ -403,11 +410,14 @@
       opacity: 0;
       animation: slideUp .8s .25s ease forwards;
     }
-    .hero-name em {
-      display: block;
-      font-style: normal;
-      color: var(--tertiary);
+    .hero-role {
+      font-family: var(--font-body);
+      font-size: 1.5rem;
+      color: var(--outline);
+      margin-bottom: 30px;
       font-weight: 400;
+      opacity: 0;
+      animation: slideUp .8s .35s ease forwards;
     }
 
     .hero-rule {
@@ -1474,9 +1484,9 @@
     /* ── HERO PHOTO (interactive pixel-scatter, portrait, edge-faded) ── */
     .hero-photo-wrap {
       position: relative;
-      width: 280px;
-      height: 380px;
-      margin: 0 auto;
+      width: 100%;
+      height: 100%;
+      margin: 0;
     }
     #photo-canvas {
       width: 100%;
@@ -1591,10 +1601,14 @@
     ══════════════════════════════════════ */
     @media (max-width: 1024px) {
       :root { --section-pad: 7rem; }
-      #hero { grid-template-columns: 1fr; }
-      .hero-right { display: none; }
+      #hero { flex-direction: column; text-align: center; gap: 2rem; padding: 6rem 5% 4rem; }
+      .hero-text { max-width: 100%; align-items: center; text-align: center; }
+      .hero-desc { text-align: center; }
+      .hero-meta, .hero-tags, .hero-actions { justify-content: center; }
+      .hero-visual { height: 40vh; }
       .about-grid { grid-template-columns: 1fr; }
-      .about-side { display: none; }
+      .about-side { margin-top: 3rem; align-items: center; }
+      .about-photo { width: 100%; max-width: 320px; align-self: center; }
       .skills-outer { grid-template-columns: 1fr; }
       .workflow-track { grid-template-columns: repeat(3, 1fr); gap: 2rem 0; }
       .workflow-track::before { display: none; }
@@ -1666,11 +1680,11 @@
   <!-- ══════════════════════════════════════
        HERO
   ══════════════════════════════════════ -->
-  <section id="hero">
+  <section id="hero" class="hero-section">
     <div class="hero-grid"></div>
     <canvas id="hero-dots"></canvas>
 
-    <div class="hero-left">
+    <div class="hero-text">
       <div class="hero-meta">
         <div class="hero-status">
           <div class="hero-status-dot"></div>
@@ -1683,17 +1697,13 @@
         </div>
       </div>
 
-      <h1 class="hero-name">
-        Nabin<br>Prasad Dev<br>
-        <em>AI/ML Engineer.</em>
-      </h1>
+      <h1 class="hero-name">Nabin Prasad Dev</h1>
+      <h2 class="hero-role">AI/ML Engineer.</h2>
 
       <div class="hero-rule"></div>
 
       <p class="hero-desc">
-        Bridging <strong>Data Intelligence</strong> with <strong>Premium User Experience</strong> —
-        an AI/ML Engineer with 7+ years of operational leadership, building models
-        that solve real problems in urban systems, hospitality, and public safety.
+        Bridging <strong>Data Intelligence</strong> with <strong>Premium User Experience</strong> — an AI/ML Engineer with 7+ years of operational leadership, building models that solve real problems in urban systems, hospitality, and public safety.
       </p>
 
       <div class="hero-tags">
@@ -1713,7 +1723,7 @@
     </div>
 
     <!-- Interactive Photo (pixel-scatter canvas) -->
-    <div class="hero-right">
+    <div class="hero-visual">
       <div class="hero-photo-wrap" id="hero-photo-outer">
         <canvas id="photo-canvas"></canvas>
         <div class="photo-hint">✦ &nbsp;HOVER TO INTERACT</div>
@@ -2808,12 +2818,16 @@
       const img = new Image();
       img.src = PROFILE_PHOTO_B64;
 
-      img.onload = () => {
+      function initPhoto() {
+        if (!img.complete || img.naturalWidth === 0) return;
         const W = photoCanvas.parentElement.offsetWidth;
         const H = photoCanvas.parentElement.offsetHeight;
+        if (W === 0 || H === 0) return;
+        
         const dpr = window.devicePixelRatio || 1;
         photoCanvas.width = W * dpr;
         photoCanvas.height = H * dpr;
+        ctx.setTransform(1, 0, 0, 1, 0, 0);
         ctx.scale(dpr, dpr);
         // Render image as portrait — cover-fit, centred, vertical bias toward face
         const tmp = document.createElement('canvas');
@@ -2862,11 +2876,18 @@
           }
         }
         if (!animating) { animating = true; animPhoto(); }
-      };
+      }
+
+      img.onload = initPhoto;
+      window.addEventListener('resize', () => {
+        clearTimeout(photoCanvas.resizeTimeout);
+        photoCanvas.resizeTimeout = setTimeout(initPhoto, 200);
+      });
 
       img.onerror = () => {
         const W = photoCanvas.parentElement.offsetWidth;
         const H = photoCanvas.parentElement.offsetHeight;
+        if (W === 0 || H === 0) return;
         photoCanvas.width = W; photoCanvas.height = H;
         ctx.fillStyle = '#b6c4ff';
         ctx.font = 'bold ' + Math.round(W*0.28) + 'px Space Grotesk,sans-serif';
