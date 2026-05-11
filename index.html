@@ -2143,50 +2143,62 @@
           </div>
           <div class="project-title">Smart Hotel Analytics Platform</div>
           <p class="project-hook">"7 years working in hotels showed me exactly what data was being wasted."</p>
-          <p class="project-desc">A production-grade MLOps system with 9 FastAPI endpoints, 3 trained forecasting models (Prophet + external regressors), a GBM cancellation classifier, LP-based overbooking optimizer, SHAP explainability, dynamic pricing engine, 3-tier NLP sentiment pipeline, and a Streamlit dashboard — containerized with Docker Compose and monitored via MLflow with nightly CI/CD drift detection. Built entirely from operational domain expertise earned at Nobu Hotel Toronto and Marriott.</p>
-          <div class="arch-block">
-            <div class="arch-title">Architecture</div>
+          <div class="arch-block" style="background:rgba(180,196,255,0.04);border-color:rgba(180,196,255,.18);">
+            <div class="arch-title">The Problem</div>
             <div class="arch-body">
-              <strong>Backend:</strong> FastAPI · 9 routers · GZip + CORS middleware · lru_cache model warm-up<br>
-              <strong>ML Models:</strong> Prophet (×3) · GBM + SMOTE · KNN Recommender · SHAP TreeExplainer<br>
-              <strong>Ops:</strong> Docker Compose · MLflow tracking · GitHub Actions CI/CD · Nightly drift detection
+              Hotel management relies heavily on static, backward-looking reports. Critical revenue decisions — like overbooking limits and dynamic pricing — are often made via intuition rather than predictive data, resulting in lost revenue and operational inefficiencies.
+            </div>
+          </div>
+          <div class="arch-block">
+            <div class="arch-title">The Stack</div>
+            <div class="arch-body">
+              <strong>Backend:</strong> FastAPI · Python 3.11 · GZip + CORS middleware<br>
+              <strong>ML Models:</strong> Prophet (time-series) · LightGBM + SMOTE (classification) · KNN (recommender) · SHAP (explainability)<br>
+              <strong>NLP:</strong> 3-tier sentiment pipeline — HuggingFace / Anthropic Claude / TextBlob<br>
+              <strong>Ops &amp; UI:</strong> Docker Compose · Streamlit · MLflow · GitHub Actions CI/CD
+            </div>
+          </div>
+          <div class="arch-block">
+            <div class="arch-title">The Solution</div>
+            <div class="arch-body">
+              A production-grade MLOps system featuring 9 FastAPI endpoints. Three time-series models forecast ADR, Occupancy, and Revenue — incorporating external regressors like weather and holidays. A gradient-boosting cancellation classifier, an LP-based overbooking optimizer, and a dynamic pricing engine round out the core. The entire platform is containerized via Docker and heavily monitored with MLflow and nightly CI/CD drift detection. Built entirely from operational domain expertise earned at <strong>Nobu Hotel Toronto</strong> and <strong>Marriott</strong>.
             </div>
           </div>
           <div class="project-stack">
-            <span class="pill">Python 3.11</span><span class="pill">FastAPI</span><span class="pill">Prophet</span><span class="pill">Scikit-learn</span><span class="pill">SHAP</span><span class="pill">PuLP</span><span class="pill">Streamlit</span><span class="pill">MLflow</span><span class="pill">Docker</span><span class="pill">GitHub Actions</span><span class="pill">HuggingFace</span><span class="pill">SMOTE</span>
+            <span class="pill">Python 3.11</span><span class="pill">FastAPI</span><span class="pill">Prophet</span><span class="pill">LightGBM</span><span class="pill">SHAP</span><span class="pill">PuLP</span><span class="pill">Streamlit</span><span class="pill">MLflow</span><span class="pill">Docker</span><span class="pill">GitHub Actions</span><span class="pill">HuggingFace</span><span class="pill">Anthropic Claude</span><span class="pill">SMOTE</span>
           </div>
           <div class="project-links">
-            <a href="https://github.com/nabindev3" target="_blank" class="proj-link primary">View on GitHub →</a>
-            <a href="#" class="proj-link">Live Demo ↗</a>
+            <a href="https://github.com/nabindev3/Smart-Hotel-Analytics-" target="_blank" rel="noopener" class="proj-link primary">View on GitHub →</a>
+            <a href="https://smart-hotel-analytics-platform-6ziv.onrender.com/" target="_blank" rel="noopener" class="proj-link">Live Demo ↗</a>
           </div>
         </div>
 
         <div>
-          <div style="font-size:.68rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--outline);margin-bottom:.75rem;">Actual Model Metrics</div>
+          <div style="font-size:.68rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--outline);margin-bottom:.75rem;">Measurable Outcomes</div>
           <div class="kpi-row">
             <div class="kpi-cell">
               <div class="kpi-num">7.4%</div>
               <div class="kpi-label">ADR Forecast MAPE</div>
             </div>
             <div class="kpi-cell">
-              <div class="kpi-num">85%</div>
-              <div class="kpi-label">Occupancy Accuracy</div>
+              <div class="kpi-num">15.1%</div>
+              <div class="kpi-label">Occupancy MAPE</div>
+            </div>
+            <div class="kpi-cell">
+              <div class="kpi-num">86.4%</div>
+              <div class="kpi-label">Cancellation ROC-AUC</div>
             </div>
             <div class="kpi-cell">
               <div class="kpi-num">18%</div>
-              <div class="kpi-label">Scheduling Savings</div>
+              <div class="kpi-label">Scheduling Savings <span style="opacity:.6;">(proj.)</span></div>
             </div>
             <div class="kpi-cell">
               <div class="kpi-num">3×</div>
               <div class="kpi-label">Faster Reporting</div>
             </div>
-            <div class="kpi-cell">
-              <div class="kpi-num">NLP</div>
-              <div class="kpi-label">Sentiment Pipeline</div>
-            </div>
           </div>
           <div class="project-result">
-            ADR Forecast MAPE: 7.4% · Occupancy MAPE: 15.1% · Data Quality Grade: A · 60,000 booking records
+            <strong style="color:var(--on-surface);">179,390</strong> booking records ingested · GBM accuracy <strong style="color:var(--on-surface);">77.6%</strong> · Data quality grade <strong style="color:var(--on-surface);">B</strong> — models trained on real, messy operational data (not a clean toy set)
           </div>
           <p style="font-size:.78rem;color:var(--outline);line-height:1.65;font-style:italic;">
             Hospitality domain expertise + ML engineering = problems most AI engineers don't even know to ask about.
