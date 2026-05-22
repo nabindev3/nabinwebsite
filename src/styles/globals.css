@@ -868,34 +868,6 @@ section {
   background: var(--surface-container);
   margin-bottom: 0.9rem;
 }
-/* Native <details> accordion — open by default on desktop, collapsed on mobile */
-details.arch-block { padding: 0; }
-details.arch-block > summary {
-  list-style: none;
-  cursor: pointer;
-  padding: 1rem 1.25rem;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 1rem;
-  user-select: none;
-  transition: color var(--transition);
-}
-details.arch-block > summary::-webkit-details-marker { display: none; }
-details.arch-block > summary::after {
-  content: '';
-  width: 8px; height: 8px;
-  border-right: 1.5px solid var(--tertiary);
-  border-bottom: 1.5px solid var(--tertiary);
-  transform: rotate(45deg);
-  transition: transform var(--transition);
-  flex-shrink: 0;
-  margin-top: -2px;
-}
-details.arch-block[open] > summary::after { transform: rotate(-135deg); margin-top: 2px; }
-details.arch-block > summary:hover { color: #fff; }
-details.arch-block > .arch-body { padding: 0 1.25rem 1rem; }
-
 .arch-title {
   font-size: 0.65rem;
   font-weight: 700;
@@ -1292,6 +1264,26 @@ footer {
   .stats-grid { grid-template-columns: 1fr; }
   .kpi-row { grid-template-columns: 1fr 1fr; }
 }
-@media (hover: none) {
+/* Touch devices: disable custom cursor, restore native pointer.
+   Was suppressing tap interactions on some mobile Safari versions. */
+@media (hover: none), (pointer: coarse) {
   .photo-hint, .skills-canvas-hint { display: none; }
+  body { cursor: auto; }
+  #cur-dot, #cur-ring { display: none !important; }
+  a, button, .nav-cta, .btn-primary, .btn-ghost, .gallery-nav-btn, .tab-btn, #btt, .hamburger {
+    cursor: pointer;
+  }
+}
+
+/* Mobile: tighten dense project text for scannability */
+@media (max-width: 768px) {
+  .project-card.featured { padding: 1.5rem; gap: 1.5rem; }
+  .project-card.featured .project-title { font-size: 1.35rem; }
+  .arch-block { padding: 0.85rem 1rem; margin-bottom: 0.65rem; }
+  .arch-body { font-size: 0.85rem; line-height: 1.6; }
+  .arch-title { font-size: 0.6rem; margin-bottom: 0.4rem; }
+  .kpi-num { font-size: 1.25rem; }
+  .kpi-label { font-size: 0.55rem; }
+  .project-hook { font-size: 0.88rem; }
+  .project-result { font-size: 0.85rem; padding: 0.85rem 1rem; }
 }

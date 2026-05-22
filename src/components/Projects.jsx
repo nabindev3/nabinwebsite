@@ -1,20 +1,6 @@
 import { FEATURED_PROJECTS, PROJECTS } from '../data/content.js';
-import { useMediaQuery } from '../hooks/useMediaQuery.js';
 
-function ArchSection({ title, html, openDefault, accent }) {
-  return (
-    <details
-      className="arch-block"
-      open={openDefault}
-      style={accent ? { background: 'rgba(180,196,255,0.04)', borderColor: 'rgba(180,196,255,.18)' } : undefined}
-    >
-      <summary className="arch-title">{title}</summary>
-      <div className="arch-body" dangerouslySetInnerHTML={{ __html: html }} />
-    </details>
-  );
-}
-
-function FeaturedCard({ p, isDesktop }) {
+function FeaturedCard({ p }) {
   return (
     <div className="project-card featured">
       <div>
@@ -25,9 +11,20 @@ function FeaturedCard({ p, isDesktop }) {
         <div className="project-title">{p.title}</div>
         <p className="project-hook">{p.hook}</p>
 
-        <ArchSection title="The Problem"  html={p.problem}  openDefault={isDesktop} accent />
-        <ArchSection title="The Stack"    html={p.stack}    openDefault={isDesktop} />
-        <ArchSection title="The Solution" html={p.solution} openDefault={isDesktop} />
+        <div className="arch-block" style={{ background: 'rgba(180,196,255,0.04)', borderColor: 'rgba(180,196,255,.18)' }}>
+          <div className="arch-title">The Problem</div>
+          <div className="arch-body" dangerouslySetInnerHTML={{ __html: p.problem }} />
+        </div>
+
+        <div className="arch-block">
+          <div className="arch-title">The Stack</div>
+          <div className="arch-body" dangerouslySetInnerHTML={{ __html: p.stack }} />
+        </div>
+
+        <div className="arch-block">
+          <div className="arch-title">The Solution</div>
+          <div className="arch-body" dangerouslySetInnerHTML={{ __html: p.solution }} />
+        </div>
 
         <div className="project-stack">
           {p.pills.map((pill) => <span key={pill} className="pill">{pill}</span>)}
@@ -91,7 +88,6 @@ function SmallCard({ p, delay }) {
 }
 
 export default function Projects() {
-  const isDesktop = useMediaQuery('(min-width: 769px)');
   return (
     <section id="projects">
       <p className="section-label reveal">projects</p>
@@ -103,7 +99,7 @@ export default function Projects() {
       </p>
 
       <div className="projects-grid reveal" style={{ transitionDelay: '.2s' }}>
-        {FEATURED_PROJECTS.map((p) => <FeaturedCard key={p.title} p={p} isDesktop={isDesktop} />)}
+        {FEATURED_PROJECTS.map((p) => <FeaturedCard key={p.title} p={p} />)}
         {PROJECTS.map((p, i) => <SmallCard key={p.title} p={p} delay={0.05 + i * 0.05} />)}
       </div>
     </section>
