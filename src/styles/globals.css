@@ -916,7 +916,7 @@ section {
 .proj-link:hover { color: var(--on-surface); }
 .kpi-row {
   display: grid;
-  grid-template-columns: repeat(5, 1fr);
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
   gap: 1px;
   background: var(--outline-var);
   border: 1px solid var(--outline-var);
