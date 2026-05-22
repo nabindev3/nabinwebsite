@@ -156,8 +156,8 @@ export const FEATURED_PROJECTS = [
     solution: `A leakage-controlled, paired-bootstrap-rigorous pipeline that hooks Chronos-T5 encoder activations, trains an 8× TopK SAE only on train-split tokens, and runs five probes in parallel — input-stats baseline, +raw activations, +SAE features, plus two diagnostic isolation probes to decide whether internal representations add predictive power beyond eight classical context-window statistics. Reframes the strongest probe as an abstention signal: sort test windows ascending by predicted P(hard), retain the predicted-easy coverage fraction, and measure mean CRPS on retained against an oracle (sort by true CRPS) and a 2 000-permutation random baseline. Cross-layer robustness check re-runs the full probe on the late-encoder (block 5) via a fast <code>--skip_predict</code> activation-only extraction that reuses cached CRPS labels.<br><br>Methodological scaffolding the project enforces in code: temporal train/test split with purge gap ≥ context + horizon (kills the overlapping-sliding-window leakage that inflates AUROC in most published probes), train-only CRPS normalization, seasonal-naive MASE, and an inner CV that uses TimeSeriesSplit instead of shuffled K-fold so consecutive overlapping windows don't leak across folds when picking L1 regularization.`,
     pills: ['Python', 'PyTorch', 'Chronos-T5', 'TopK SAE', 'scikit-learn', 'statsmodels', 'safetensors', 'Parquet', 'Matplotlib', 'LaTeX'],
     links: [
-      { href: 'https://github.com/nabindev3/TSFM-Routing-Probe', label: 'View on GitHub →', primary: true },
-      { href: 'https://github.com/nabindev3/TSFM-Routing-Probe/tree/main/paper', label: 'Workshop Report (LaTeX) →' }
+      { href: 'https://github.com/nabindev3/SAE-framework-or-time-series-analysis', label: 'View on GitHub →', primary: true },
+      { href: 'https://github.com/nabindev3/SAE-framework-or-time-series-analysis/tree/main/paper', label: 'Workshop Report (LaTeX) →' }
     ],
     impactLabel: 'Impact & Academic Rigor',
     kpis: [
