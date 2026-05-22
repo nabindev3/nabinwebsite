@@ -2112,6 +2112,81 @@
 
     <div class="projects-grid reveal" style="transition-delay:.2s;">
 
+      <!-- ── FEATURED: TSFM ROUTING PROBE ── -->
+      <div class="project-card featured">
+        <div>
+          <div class="project-meta">
+            <span class="project-type">⭐ Featured · Interpretability · Research</span>
+            <span class="project-year">2026</span>
+          </div>
+          <div class="project-title">TSFM Routing Probe — Label-Free Forecast-Difficulty Signals for Time-Series Foundation Models</div>
+          <p class="project-hook">"Not every forecast deserves equal trust. The hard part is knowing which ones don't."</p>
+          <div class="arch-block" style="background:rgba(180,196,255,0.04);border-color:rgba(180,196,255,.18);">
+            <div class="arch-title">The Problem</div>
+            <div class="arch-body">
+              Time-series foundation models like Chronos, TimesFM and Moirai give strong zero-shot forecasts on unseen series — but they ship without a native abstention or uncertainty signal. In production, every forecast is treated equally: same compute, same trust, same downstream commitment. Some windows are <strong>5× harder</strong> than others, and there's no built-in way to know which. The open question, unclaimed in the published 2026 literature: do a TSFM's internal representations encode a self-difficulty signal that a cheap classical baseline doesn't already capture?
+            </div>
+          </div>
+          <div class="arch-block">
+            <div class="arch-title">The Stack</div>
+            <div class="arch-body">
+              <strong>Backbone:</strong> Chronos-T5-small (60 M, T5 encoder-decoder, LM-style training on quantized numeric tokens)<br>
+              <strong>Interpretability:</strong> TopK Sparse Autoencoder (8× expansion, d_hidden=4096, k=32, aux-revival) · Encoder block hooks<br>
+              <strong>Probing:</strong> L1 logistic · TimeSeriesSplit cross-validation · Paired bootstrap (2 000 iterations) for ΔAUROC CIs<br>
+              <strong>Selective prediction:</strong> Risk-coverage curves · AURC · Oracle/random baselines<br>
+              <strong>Storage:</strong> safetensors (per-token fp16) · Parquet (train-only-normalized labels) · seasonal-naive MASE (m = 24)<br>
+              <strong>Ops:</strong> Hard guardrails (probe refuses on unlabeled data or random-init SAE) · One-command reproduce.sh · pinned env
+            </div>
+          </div>
+          <div class="arch-block">
+            <div class="arch-title">The Solution</div>
+            <div class="arch-body">
+              A leakage-controlled, paired-bootstrap-rigorous pipeline that hooks Chronos-T5 encoder activations, trains an 8× TopK SAE only on train-split tokens, and runs five probes in parallel — input-stats baseline, +raw activations, +SAE features, plus two diagnostic isolation probes — to decide whether internal representations add predictive power beyond eight classical context-window statistics. Reframes the strongest probe as an abstention signal: sort test windows ascending by predicted P(hard), retain the predicted-easy coverage fraction, and measure mean CRPS on retained against an oracle (sort by true CRPS) and a 2 000-permutation random baseline.<br><br>
+              Methodological scaffolding the project enforces in code: temporal train/test split with purge gap ≥ context + horizon (kills the overlapping-sliding-window leakage that inflates AUROC in most published probes), train-only CRPS normalization, seasonal-naive MASE, and an inner CV that uses TimeSeriesSplit instead of shuffled K-fold so consecutive overlapping windows don't leak across folds when picking L1 regularization.
+            </div>
+          </div>
+          <div class="project-stack">
+            <span class="pill">Python</span><span class="pill">PyTorch</span><span class="pill">Chronos-T5</span><span class="pill">TopK SAE</span><span class="pill">scikit-learn</span><span class="pill">statsmodels</span><span class="pill">safetensors</span><span class="pill">Parquet</span><span class="pill">Matplotlib</span><span class="pill">LaTeX</span>
+          </div>
+          <div class="project-links">
+            <a href="https://github.com/nabindev3/TSFM-Routing-Probe" target="_blank" rel="noopener" class="proj-link primary">View on GitHub →</a>
+            <a href="https://github.com/nabindev3/TSFM-Routing-Probe/tree/main/paper" target="_blank" rel="noopener" class="proj-link">Workshop Report (LaTeX) →</a>
+          </div>
+        </div>
+
+        <div>
+          <div style="font-size:.68rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--outline);margin-bottom:.75rem;">Impact &amp; Academic Rigor</div>
+          <div class="kpi-row">
+            <div class="kpi-cell">
+              <div class="kpi-num">30%</div>
+              <div class="kpi-label">Oracle Ranking Captured <span style="opacity:.6;">(AURC 1.22 vs 0.85)</span></div>
+            </div>
+            <div class="kpi-cell">
+              <div class="kpi-num">−8.1%</div>
+              <div class="kpi-label">Mean CRPS @ 50% Coverage</div>
+            </div>
+            <div class="kpi-cell">
+              <div class="kpi-num">701</div>
+              <div class="kpi-label">Forecast Windows (483 / 167 / 51 purge)</div>
+            </div>
+            <div class="kpi-cell">
+              <div class="kpi-num">2 000</div>
+              <div class="kpi-label">Paired-Bootstrap Iterations</div>
+            </div>
+            <div class="kpi-cell">
+              <div class="kpi-num">Null</div>
+              <div class="kpi-label">Δ(SAE − stats) = −0.228, 95% CI [−0.366, −0.092]</div>
+            </div>
+          </div>
+          <div class="project-result">
+            Two findings from one pipeline, neither reframed post-hoc. (1) A rigorous <strong style="color:var(--on-surface);">null</strong> for the SAE-features-add-incremental-difficulty-signal hypothesis at chronos-t5-small's mid-encoder, with paired-bootstrap CIs that don't cross zero. (2) A positive <strong style="color:var(--on-surface);">selective-prediction</strong> result on the same data: the input-statistics probe is itself a usable forecast-abstention signal that captures 30% of the oracle's available AURC improvement. The novelty wedge — label-free, inference-time difficulty prediction for routing/abstention — remains unclaimed in the 2026 literature: Mishra (arXiv:2603.10071) did causal ablation, TimeSAE (arXiv:2601.09776) did post-hoc black-box explanation, neither did this. Workshop-formatted manuscript, one-command reproducible pipeline, hard methodology guardrails in code.
+          </div>
+          <p style="font-size:.78rem;color:var(--outline);line-height:1.65;font-style:italic;">
+            Not another SAE benchmark — a leakage-controlled test of whether a TSFM's internals know what its CRPS distribution doesn't yet.
+          </p>
+        </div>
+      </div>
+
       <!-- ── FEATURED: CASCADE ENGINE ── -->
       <div class="project-card featured">
         <div>
