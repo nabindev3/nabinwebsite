@@ -1,7 +1,8 @@
 import { useEffect, useRef } from 'react';
 import { PROFILE_PHOTO_B64 } from '../data/images.js';
 
-// Interactive pixel-scatter portrait — particles scatter from the cursor and snap back.
+// Interactive pixel-scatter portrait — only updates particles that are actually moving.
+// Idle particles (no force, at origin) skip the per-frame math entirely.
 export default function HeroPhoto() {
   const wrapRef = useRef(null);
   const canvasRef = useRef(null);
@@ -11,11 +12,14 @@ export default function HeroPhoto() {
     const wrap = wrapRef.current;
     if (!photoCanvas || !wrap) return;
     const ctx = photoCanvas.getContext('2d');
-    const GRID = 2;
+    const GRID = 4;                  // pixel block size — 4× faster than GRID=2
+    const R = 80;
+    const R2 = R * R;
     let particles = [];
     let photoMouse = { x: -9999, y: -9999 };
     let isHovered = false;
     let raf = 0;
+    let visible = true;
     const BG_R = 18, BG_G = 20, BG_B = 20;
 
     const img = new Image();
@@ -26,7 +30,7 @@ export default function HeroPhoto() {
       const W = wrap.offsetWidth;
       const H = wrap.offsetHeight;
       if (W === 0 || H === 0) return;
-      const dpr = window.devicePixelRatio || 1;
+      const dpr = Math.min(window.devicePixelRatio || 1, 1.5);  // cap DPR
       photoCanvas.style.width = W + 'px';
       photoCanvas.style.height = H + 'px';
       photoCanvas.width = W * dpr;
@@ -75,25 +79,49 @@ export default function HeroPhoto() {
     }
 
     function animPhoto() {
+      if (!visible) {
+        // canvas off-screen — skip animation, schedule cheap visibility re-check
+        raf = requestAnimationFrame(animPhoto);
+        return;
+      }
       const W = wrap.offsetWidth;
       const H = wrap.offsetHeight;
       ctx.clearRect(0, 0, W, H);
-      particles.forEach((p) => {
-        const dx = p.x - photoMouse.x, dy = p.y - photoMouse.y;
-        const d = Math.hypot(dx, dy);
-        const R = 80;
-        if (isHovered && d < R && d > 0) {
-          const f = ((R - d) / R) * 5.5;
-          p.vx += (dx / d) * f;
-          p.vy += (dy / d) * f;
+      const mx = photoMouse.x, my = photoMouse.y;
+      const hover = isHovered;
+
+      for (let i = 0, n = particles.length; i < n; i++) {
+        const p = particles[i];
+        const ax = p.x - p.ox;
+        const ay = p.y - p.oy;
+        const vsq = p.vx * p.vx + p.vy * p.vy;
+
+        // Fast-path: particle at rest and mouse not over — just draw, skip physics.
+        if (!hover && vsq < 0.001 && ax * ax + ay * ay < 0.01) {
+          ctx.fillStyle = p.color;
+          ctx.fillRect(p.x, p.y, GRID - 1, GRID - 1);
+          continue;
+        }
+
+        if (hover) {
+          const dx = p.x - mx;
+          const dy = p.y - my;
+          const d2 = dx * dx + dy * dy;
+          if (d2 < R2 && d2 > 0) {
+            const d = Math.sqrt(d2);
+            const f = ((R - d) / R) * 5.5;
+            p.vx += (dx / d) * f;
+            p.vy += (dy / d) * f;
+          }
         }
         p.vx += (p.ox - p.x) * 0.07;
         p.vy += (p.oy - p.y) * 0.07;
         p.vx *= 0.80; p.vy *= 0.80;
         p.x += p.vx; p.y += p.vy;
+
         ctx.fillStyle = p.color;
         ctx.fillRect(p.x, p.y, GRID - 1, GRID - 1);
-      });
+      }
       raf = requestAnimationFrame(animPhoto);
     }
 
@@ -128,11 +156,16 @@ export default function HeroPhoto() {
     photoCanvas.addEventListener('mouseenter', onEnter);
     photoCanvas.addEventListener('mouseleave', onLeave);
 
+    // Pause animation when hero is scrolled off-screen
+    const io = new IntersectionObserver(([entry]) => { visible = entry.isIntersecting; }, { threshold: 0 });
+    io.observe(photoCanvas);
+
     return () => {
       window.removeEventListener('resize', onResize);
       photoCanvas.removeEventListener('mousemove', onMove);
       photoCanvas.removeEventListener('mouseenter', onEnter);
       photoCanvas.removeEventListener('mouseleave', onLeave);
+      io.disconnect();
       cancelAnimationFrame(raf);
     };
   }, []);

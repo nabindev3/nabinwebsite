@@ -35,6 +35,7 @@ export default function SkillsBubbleCanvas() {
     const sMouse = { x: -9999, y: -9999, vx: 0, vy: 0 };
     let raf = 0;
     let bubbles = [];
+    let visible = true;
 
     class Bubble {
       constructor(skill) {
@@ -119,7 +120,7 @@ export default function SkillsBubbleCanvas() {
     }
 
     function initBubbles() {
-      const dpr = window.devicePixelRatio || 1;
+      const dpr = Math.min(window.devicePixelRatio || 1, 1.5);
       sCanvas.width  = sCanvas.offsetWidth  * dpr;
       sCanvas.height = sCanvas.offsetHeight * dpr;
       sCtx.setTransform(1, 0, 0, 1, 0, 0);
@@ -129,6 +130,7 @@ export default function SkillsBubbleCanvas() {
     initBubbles();
 
     function anim() {
+      if (!visible) { raf = requestAnimationFrame(anim); return; }
       sCtx.clearRect(0, 0, sCanvas.offsetWidth, sCanvas.offsetHeight);
       handleCollisions();
       bubbles.forEach((b) => b.update(sMouse.x, sMouse.y, sMouse.vx, sMouse.vy));
@@ -137,6 +139,9 @@ export default function SkillsBubbleCanvas() {
       raf = requestAnimationFrame(anim);
     }
     anim();
+
+    const io = new IntersectionObserver(([entry]) => { visible = entry.isIntersecting; }, { threshold: 0 });
+    io.observe(sCanvas);
 
     const onMove = (e) => {
       const r = sCanvas.getBoundingClientRect();
@@ -158,6 +163,7 @@ export default function SkillsBubbleCanvas() {
       sCanvas.removeEventListener('mousemove', onMove);
       sCanvas.removeEventListener('mouseleave', onLeave);
       window.removeEventListener('resize', onResize);
+      io.disconnect();
       cancelAnimationFrame(raf);
     };
   }, []);
