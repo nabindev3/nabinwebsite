@@ -3,3 +3,13 @@
 
 # macOS
 .DS_Store
+
+# Node
+node_modules/
+dist/
+*.log
+.vite/
+
+# Editor
+.vscode/
+.idea/
