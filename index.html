@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Nabin Prasad Dev — AI/ML Engineer</title>
-  <meta name="description" content="AI/ML Engineer and Operational Leader bridging Data Intelligence with Premium User Experience. Based in Toronto, ON.">
+  <meta name="description" content="AI/ML Engineer and Operational Leader bridging Data Intelligence with Premium User Experience.">
   <meta property="og:title" content="Nabin Prasad Dev — AI/ML Engineer">
   <meta property="og:description" content="Bridging Data Intelligence with Premium User Experience.">
   <meta property="og:type" content="website">
@@ -774,18 +774,12 @@
       padding: 0.6rem 0;
       border-bottom: 1px solid rgba(68,71,72,.4);
     }
-    .skill-name { font-size: 0.9rem; color: var(--on-surface-var); }
-    .skill-level {
-      font-size: 0.65rem;
-      font-weight: 600;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: var(--outline);
-    }
+    .skill-name { font-size: 0.9rem; color: var(--on-surface-var); flex: 1; }
     .skill-bar-wrap {
-      width: 80px; height: 2px;
+      width: 120px; height: 2px;
       background: var(--outline-var);
       overflow: hidden;
+      flex-shrink: 0;
     }
     .skill-bar-fill {
       height: 100%;
@@ -1629,6 +1623,12 @@
       .kpi-row { grid-template-columns: repeat(2, 1fr); }
       .workflow-track { grid-template-columns: repeat(2, 1fr); }
       .hero-name { font-size: clamp(2.4rem, 10vw, 4rem); }
+      .hero-meta { flex-wrap: wrap; gap: 0.75rem; margin-bottom: 1.5rem; }
+      .hero-meta-secondary { display: none; }
+    }
+    /* Hide hover-only hints on touch devices */
+    @media (hover: none) {
+      .photo-hint, .skills-canvas-hint { display: none; }
     }
     @media (max-width: 480px) {
       .stats-grid { grid-template-columns: 1fr; }
@@ -1688,12 +1688,7 @@
       <div class="hero-meta">
         <div class="hero-status">
           <div class="hero-status-dot"></div>
-          <span>Available · Toronto</span>
-        </div>
-        <div class="hero-divider-pipe"></div>
-        <div class="hero-clock">
-          <span class="hero-clock-time" id="hero-clock-time">--:--:--</span>
-          <span class="hero-clock-zone" id="hero-clock-zone">EST</span>
+          <span>Available for Work</span>
         </div>
       </div>
 
@@ -1784,7 +1779,7 @@
         </h2>
 
         <div class="about-text reveal" style="transition-delay:.1s;">
-          <p>I am a <strong>Toronto-based AI/ML specialist</strong> with a Computer Science background and a somewhat unconventional "secret weapon": seven years in luxury hospitality. While I'm deeply technical, focusing my expertise on <strong>Computer Vision and NLP</strong> with Python, TensorFlow, and PyTorch, my time in operations taught me something code alone cannot: how to build for people under pressure.</p>
+          <p>I am an <strong>AI/ML specialist</strong> with a Computer Science background and a somewhat unconventional "secret weapon": seven years in luxury hospitality. While I'm deeply technical, focusing my expertise on <strong>Computer Vision and NLP</strong> with Python, TensorFlow, and PyTorch, my time in operations taught me something code alone cannot: how to build for people under pressure.</p>
           <p>My work has always been about <strong>high-stakes, real-world impact</strong>. Whether I was developing earthquake early warning systems for the <strong>Nepal Academy of Science and Technology</strong>, researching open space governance in Kathmandu, or architecting data infrastructure for major investment conglomerates, I've stayed grounded in the belief that AI should solve <em>human</em> problems, not just technical ones.</p>
         </div>
 
@@ -1794,7 +1789,7 @@
         </blockquote>
 
         <div class="about-badges reveal" style="transition-delay:.35s;">
-          <span class="badge">🍁 Toronto, ON — Legally entitled to work in Canada</span>
+          <span class="badge">🍁 Legally entitled to work in Canada</span>
           <span class="badge">🇳🇵 Nepali origin</span>
           <span class="badge">🇮🇳 KIIT University alumni</span>
         </div>
@@ -1824,10 +1819,6 @@
           <img src="./nn.jpeg" alt="Nabin Prasad Dev">
         </div>
         <div class="about-info reveal" style="transition-delay:.3s;">
-          <div class="info-row">
-            <span class="info-key">Based</span>
-            <span class="info-val">Toronto, ON</span>
-          </div>
           <div class="info-row">
             <span class="info-key">Email</span>
             <span class="info-val">nabinprasaddev33@gmail.com</span>
@@ -1869,17 +1860,14 @@
           <div class="skill-item" data-w=".93">
             <span class="skill-name">Python</span>
             <div class="skill-bar-wrap"><div class="skill-bar-fill" style="--w:.93"></div></div>
-            <span class="skill-level">Expert</span>
           </div>
           <div class="skill-item" data-w=".85">
             <span class="skill-name">SQL</span>
             <div class="skill-bar-wrap"><div class="skill-bar-fill" style="--w:.85"></div></div>
-            <span class="skill-level">Advanced</span>
           </div>
           <div class="skill-item" data-w=".72">
             <span class="skill-name">Bash / Linux</span>
             <div class="skill-bar-wrap"><div class="skill-bar-fill" style="--w:.72"></div></div>
-            <span class="skill-level">Intermediate</span>
           </div>
         </div>
 
@@ -1888,22 +1876,18 @@
           <div class="skill-item" data-w=".88">
             <span class="skill-name">TensorFlow / Keras</span>
             <div class="skill-bar-wrap"><div class="skill-bar-fill" style="--w:.88"></div></div>
-            <span class="skill-level">Advanced</span>
           </div>
           <div class="skill-item" data-w=".84">
             <span class="skill-name">PyTorch</span>
             <div class="skill-bar-wrap"><div class="skill-bar-fill" style="--w:.84"></div></div>
-            <span class="skill-level">Advanced</span>
           </div>
           <div class="skill-item" data-w=".91">
             <span class="skill-name">Scikit-Learn</span>
             <div class="skill-bar-wrap"><div class="skill-bar-fill" style="--w:.91"></div></div>
-            <span class="skill-level">Expert</span>
           </div>
           <div class="skill-item" data-w=".92">
             <span class="skill-name">Pandas / NumPy</span>
             <div class="skill-bar-wrap"><div class="skill-bar-fill" style="--w:.92"></div></div>
-            <span class="skill-level">Expert</span>
           </div>
         </div>
 
@@ -1912,22 +1896,18 @@
           <div class="skill-item" data-w=".88">
             <span class="skill-name">Git / GitHub</span>
             <div class="skill-bar-wrap"><div class="skill-bar-fill" style="--w:.88"></div></div>
-            <span class="skill-level">Advanced</span>
           </div>
           <div class="skill-item" data-w=".68">
             <span class="skill-name">Docker</span>
             <div class="skill-bar-wrap"><div class="skill-bar-fill" style="--w:.68"></div></div>
-            <span class="skill-level">Intermediate</span>
           </div>
           <div class="skill-item" data-w=".82">
             <span class="skill-name">FastAPI</span>
             <div class="skill-bar-wrap"><div class="skill-bar-fill" style="--w:.82"></div></div>
-            <span class="skill-level">Advanced</span>
           </div>
           <div class="skill-item" data-w=".78">
             <span class="skill-name">MLflow / CI/CD</span>
             <div class="skill-bar-wrap"><div class="skill-bar-fill" style="--w:.78"></div></div>
-            <span class="skill-level">Intermediate</span>
           </div>
         </div>
 
@@ -1936,17 +1916,14 @@
           <div class="skill-item" data-w=".95">
             <span class="skill-name">Stakeholder Communication</span>
             <div class="skill-bar-wrap"><div class="skill-bar-fill" style="--w:.95"></div></div>
-            <span class="skill-level">Expert</span>
           </div>
           <div class="skill-item" data-w=".89">
             <span class="skill-name">Team Leadership</span>
             <div class="skill-bar-wrap"><div class="skill-bar-fill" style="--w:.89"></div></div>
-            <span class="skill-level">Advanced</span>
           </div>
           <div class="skill-item" data-w=".82">
             <span class="skill-name">Policy Research &amp; Analysis</span>
             <div class="skill-bar-wrap"><div class="skill-bar-fill" style="--w:.82"></div></div>
-            <span class="skill-level">Advanced</span>
           </div>
         </div>
 
@@ -2169,7 +2146,7 @@
           </div>
           <div class="project-links">
             <a href="https://github.com/nabindev3/Cascade-Engine" target="_blank" rel="noopener" class="proj-link primary">View on GitHub →</a>
-            <span class="proj-link" style="opacity:.55;cursor:default;">Paper — Coming Soon</span>
+            <a href="https://github.com/nabindev3/Cascade-Engine/tree/main/paper" target="_blank" rel="noopener" class="proj-link">Manuscript (LaTeX) →</a>
           </div>
         </div>
 
@@ -2309,9 +2286,6 @@
         <div class="project-stack">
           <span class="pill">TensorFlow</span><span class="pill">GANs</span><span class="pill">Scikit-Learn</span><span class="pill">NumPy</span>
         </div>
-        <div class="project-links">
-          <a href="#" class="proj-link primary">Case Study →</a>
-        </div>
       </div>
 
       <!-- IoT Traffic -->
@@ -2326,9 +2300,6 @@
         <div class="project-result">Real-time hazard detection · Vision Zero applicable</div>
         <div class="project-stack">
           <span class="pill">OpenCV</span><span class="pill">YOLO</span><span class="pill">IoT</span><span class="pill">Predictive ML</span>
-        </div>
-        <div class="project-links">
-          <a href="#" class="proj-link primary">View Details →</a>
         </div>
       </div>
 
@@ -2345,9 +2316,6 @@
         <div class="project-stack">
           <span class="pill">Spatial Mapping</span><span class="pill">Policy Analysis</span><span class="pill">Comparative Gov</span>
         </div>
-        <div class="project-links">
-          <a href="#" class="proj-link primary">Read Research →</a>
-        </div>
       </div>
 
       <!-- Infrastructure -->
@@ -2362,9 +2330,6 @@
         <div class="project-result">30% efficiency gain · Cross-departmental data integration</div>
         <div class="project-stack">
           <span class="pill">Pandas</span><span class="pill">NumPy</span><span class="pill">SQL</span><span class="pill">PostgreSQL</span>
-        </div>
-        <div class="project-links">
-          <a href="#" class="proj-link primary">View Details →</a>
         </div>
       </div>
 
@@ -2392,9 +2357,6 @@
         <div class="research-tags">
           <span class="pill">GANs</span><span class="pill">Public Safety</span><span class="pill">Nepal</span>
         </div>
-        <div class="research-action">
-          <span class="btn-coming">PDF Coming Soon</span>
-        </div>
       </div>
 
       <div class="research-card">
@@ -2404,9 +2366,6 @@
         <div class="research-tags">
           <span class="pill">Urban Planning</span><span class="pill">Comparative Policy</span><span class="pill">Toronto</span>
         </div>
-        <div class="research-action">
-          <span class="btn-coming">PDF Coming Soon</span>
-        </div>
       </div>
 
       <div class="research-card">
@@ -2415,9 +2374,6 @@
         <p class="research-abstract">Exploring the practical applications of ML in luxury hospitality: predictive maintenance, hyper-personalization, and the ethical boundaries of data-driven guest profiling.</p>
         <div class="research-tags">
           <span class="pill">AI in Hospitality</span><span class="pill">Ethics</span><span class="pill">NLP</span>
-        </div>
-        <div class="research-action">
-          <span class="btn-coming">Full Draft Coming Soon</span>
         </div>
       </div>
 
@@ -2490,7 +2446,7 @@
         </div>
       </div>
       <p style="font-size:.78rem;color:var(--outline);margin-top:1rem;font-style:italic;">
-        French proficiency is a significant asset for Canadian federal roles, municipal government contracts, and global firms with Québec or international operations.
+        I am actively developing my French proficiency to better contribute to Canadian public sector initiatives, municipal frameworks, and bilingual engineering teams.
       </p>
     </div>
   </section>
@@ -2510,63 +2466,63 @@
     <div class="photo-gallery reveal" id="photo-gallery" style="transition-delay:.15s;">
       <div class="photo-track" id="photo-track">
         <div class="photo-item">
-          <img src="" alt="Mount Royal Lookout, Montréal" id="gallery-img-1" style="object-position:center;">
+          <img loading="lazy" decoding="async" src="" alt="Mount Royal Lookout, Montréal" id="gallery-img-1" style="object-position:center;">
           <div class="photo-overlay">
             <div class="photo-caption">Mount Royal</div>
             <div class="photo-location">Montréal, QC</div>
           </div>
         </div>
         <div class="photo-item">
-          <img src="" alt="Toronto skyline at sunset" id="gallery-img-2" style="object-position:top;">
+          <img loading="lazy" decoding="async" src="" alt="Toronto skyline at sunset" id="gallery-img-2" style="object-position:top;">
           <div class="photo-overlay">
             <div class="photo-caption">Sunset Skyline</div>
             <div class="photo-location">Toronto, ON</div>
           </div>
         </div>
         <div class="photo-item">
-          <img src="" alt="Downtown Toronto" id="gallery-img-3" style="object-position:center;">
+          <img loading="lazy" decoding="async" src="" alt="Downtown Toronto" id="gallery-img-3" style="object-position:center;">
           <div class="photo-overlay">
             <div class="photo-caption">Downtown</div>
             <div class="photo-location">Toronto, ON</div>
           </div>
         </div>
         <div class="photo-item">
-          <img src="" alt="Machhapuchhre — Fishtail Peak" id="gallery-img-4" style="object-position:center;">
+          <img loading="lazy" decoding="async" src="" alt="Machhapuchhre — Fishtail Peak" id="gallery-img-4" style="object-position:center;">
           <div class="photo-overlay">
             <div class="photo-caption">Machhapuchhre</div>
             <div class="photo-location">Mardi Himal, Nepal</div>
           </div>
         </div>
         <div class="photo-item">
-          <img src="" alt="Patan Durbar Square, Kathmandu Valley" id="gallery-img-5" style="object-position:center;">
+          <img loading="lazy" decoding="async" src="" alt="Patan Durbar Square, Kathmandu Valley" id="gallery-img-5" style="object-position:center;">
           <div class="photo-overlay">
             <div class="photo-caption">Patan Durbar</div>
             <div class="photo-location">Lalitpur, Nepal</div>
           </div>
         </div>
         <div class="photo-item">
-          <img src="" alt="Himalayan vista from Nagarkot" id="gallery-img-6" style="object-position:center;">
+          <img loading="lazy" decoding="async" src="" alt="Himalayan vista from Nagarkot" id="gallery-img-6" style="object-position:center;">
           <div class="photo-overlay">
             <div class="photo-caption">Himalayan Vista</div>
             <div class="photo-location">Nagarkot, Nepal</div>
           </div>
         </div>
         <div class="photo-item">
-          <img src="" alt="Snowy Toronto street" id="gallery-img-7" style="object-position:center;">
+          <img loading="lazy" decoding="async" src="" alt="Snowy Toronto street" id="gallery-img-7" style="object-position:center;">
           <div class="photo-overlay">
             <div class="photo-caption">First Snow</div>
             <div class="photo-location">Toronto, ON</div>
           </div>
         </div>
         <div class="photo-item">
-          <img src="" alt="Castle Frank TTC station" id="gallery-img-8" style="object-position:center;">
+          <img loading="lazy" decoding="async" src="" alt="Castle Frank TTC station" id="gallery-img-8" style="object-position:center;">
           <div class="photo-overlay">
             <div class="photo-caption">Castle Frank Station</div>
             <div class="photo-location">Toronto, ON</div>
           </div>
         </div>
         <div class="photo-item">
-          <img src="" alt="Mardi Himal Base Camp" id="gallery-img-9" style="object-position:center;">
+          <img loading="lazy" decoding="async" src="" alt="Mardi Himal Base Camp" id="gallery-img-9" style="object-position:center;">
           <div class="photo-overlay">
             <div class="photo-caption">Mardi Himal Base Camp</div>
             <div class="photo-location">Annapurna, Nepal</div>
@@ -2595,7 +2551,7 @@
     <div class="reveal">
       <div class="contact-avail">
         <div class="contact-avail-dot"></div>
-        Open to new opportunities — Toronto &amp; Remote
+        Open to new opportunities
       </div>
     </div>
 
