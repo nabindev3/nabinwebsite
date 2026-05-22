@@ -635,8 +635,8 @@
 
     .about-grid {
       display: grid;
-      grid-template-columns: 1.2fr 0.8fr;
-      gap: 6rem;
+      grid-template-columns: 1.5fr 0.5fr;
+      gap: 3.5rem;
       align-items: start;
     }
 
@@ -705,12 +705,13 @@
       gap: 1.5rem;
     }
     .about-photo {
-      width: 65%;
-      aspect-ratio: 3/4;
+      width: 100%;
+      max-width: 220px;
+      aspect-ratio: 4/5;
       overflow: hidden;
       border: 1px solid var(--outline-var);
       background: var(--surface-container);
-      align-self: flex-end;
+      align-self: flex-start;
     }
     .about-photo img {
       width: 100%; height: 100%;
