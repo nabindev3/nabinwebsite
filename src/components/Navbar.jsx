@@ -15,7 +15,7 @@ export default function Navbar() {
     <>
       <nav id="navbar" className={`site-nav${compact ? ' compact' : ''}`}>
         <a href="#hero" className="nav-logo" aria-label="Nabin Prasad Dev — Home">
-          <img className="nav-logo-mark" src="/favicon-32.png?v=3" alt="" width="32" height="32" />
+          <img className="nav-logo-mark" src="/favicon-32.png?v=4" alt="" width="32" height="32" />
         </a>
         <ul className="nav-links">
           {NAV_LINKS.map((l) => (
