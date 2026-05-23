@@ -1,11 +1,11 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 
-// Set base to the repo name so GitHub Pages serves assets from the right path.
-// If a custom domain (CNAME) is added later, change this back to '/'.
+// Site is served from a custom domain (nabinpdev.com), so assets resolve from root.
+// If reverting to the bare github.io/<repo>/ URL, change base back to '/nabinwebsite/'.
 export default defineConfig({
   plugins: [react()],
-  base: '/nabinwebsite/',
+  base: '/',
   build: {
     outDir: 'dist',
     sourcemap: false,
