@@ -34,7 +34,7 @@ export default function Hero() {
             <svg width="14" height="14" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
             View My Work
           </a>
-          <a href="mailto:nabinprasaddev33@gmail.com" className="btn-ghost">Get In Touch</a>
+          <a href="mailto:hello@nabinpdev.com" className="btn-ghost">Get In Touch</a>
         </div>
       </div>
 

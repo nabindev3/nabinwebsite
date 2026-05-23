@@ -47,7 +47,7 @@ export const ABOUT = {
     { num: '30%',   desc: 'Operational efficiency gain — legacy DB modernization' }
   ],
   info: [
-    { key: 'Email',     val: 'nabinprasaddev33@gmail.com' },
+    { key: 'Email',     val: 'hello@nabinpdev.com' },
     { key: 'Degree',    val: 'BTech CSE + PG AI/ML' },
     { key: 'Status',    val: 'Open to Work', valStyle: { color: '#3DBF82' } },
     { key: 'Languages', val: 'EN · NE · FR (learning)' }
@@ -339,9 +339,9 @@ export const PHOTOS = [
 
 export const CONTACT = {
   blurb: `Whether it's an AI/ML role, civic tech project, urban research collaboration, or just a conversation — I'd love to hear from you.`,
-  email: 'nabinprasaddev33@gmail.com',
+  email: 'hello@nabinpdev.com',
   links: [
-    { href: 'mailto:nabinprasaddev33@gmail.com', label: 'Email',   icon: 'mail' },
+    { href: 'mailto:hello@nabinpdev.com', label: 'Email',   icon: 'mail' },
     { href: 'https://www.linkedin.com/in/nabin-prasad-dev-a9a3121b7', label: 'LinkedIn', icon: 'linkedin' },
     { href: 'https://github.com/nabindev3', label: 'GitHub', icon: 'github' }
   ]
