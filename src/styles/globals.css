@@ -119,10 +119,9 @@ nav.site-nav.compact { padding: 1rem var(--gutter); }
 }
 .nav-logo-mark {
   width: 28px; height: 28px;
-  border: 1px solid var(--tertiary);
-  display: flex; align-items: center; justify-content: center;
-  font-size: 0.7rem;
-  color: var(--tertiary);
+  display: block;
+  object-fit: contain;
+  flex-shrink: 0;
 }
 .nav-links {
   display: flex;

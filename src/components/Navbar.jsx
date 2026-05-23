@@ -15,7 +15,7 @@ export default function Navbar() {
     <>
       <nav id="navbar" className={`site-nav${compact ? ' compact' : ''}`}>
         <a href="#hero" className="nav-logo">
-          <div className="nav-logo-mark">N</div>
+          <img className="nav-logo-mark" src="/favicon-32.png" alt="" width="28" height="28" />
           Nabin Prasad Dev
         </a>
         <ul className="nav-links">
