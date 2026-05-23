@@ -196,27 +196,27 @@ export const FEATURED_PROJECTS = [
   },
   {
     type: '⭐ Featured · MLOps · Hospitality AI',
-    year: '2025',
-    title: 'Smart Hotel Analytics Platform',
+    year: '2025 / 2026',
+    title: 'Hotel Revenue ML Platform',
     hook: '"7 years working in hotels showed me exactly what data was being wasted."',
     problem: `Hotel management relies heavily on static, backward-looking reports. Critical revenue decisions — like overbooking limits and dynamic pricing — are often made via intuition rather than predictive data, resulting in lost revenue and operational inefficiencies.`,
-    stack: `<strong>Backend:</strong> FastAPI · Python 3.11 · GZip + CORS middleware<br><strong>ML Models:</strong> Prophet (time-series) · LightGBM + SMOTE (classification) · KNN (recommender) · SHAP (explainability)<br><strong>NLP:</strong> 3-tier sentiment pipeline — HuggingFace / Anthropic Claude / TextBlob<br><strong>Ops & UI:</strong> Docker Compose · Streamlit · MLflow · GitHub Actions CI/CD`,
-    solution: `A production-grade MLOps system featuring 9 FastAPI endpoints. Three time-series models forecast ADR, Occupancy, and Revenue — incorporating external regressors like weather and holidays. A gradient-boosting cancellation classifier, an LP-based overbooking optimizer, and a dynamic pricing engine round out the core. The entire platform is containerized via Docker and heavily monitored with MLflow and nightly CI/CD drift detection. Built entirely from operational domain expertise earned at <strong>Nobu Hotel Toronto</strong> and <strong>Marriott</strong>.`,
-    pills: ['Python 3.11', 'FastAPI', 'Prophet', 'LightGBM', 'SHAP', 'PuLP', 'Streamlit', 'MLflow', 'Docker', 'GitHub Actions', 'HuggingFace', 'Anthropic Claude', 'SMOTE'],
+    stack: `<strong>Backend:</strong> FastAPI · Python 3.11 · GZip + CORS middleware<br><strong>ML Models:</strong> XGBoost (classification) · N-BEATS &amp; Prophet (time-series forecasting) · KNN (recommender) · SHAP (explainability)<br><strong>NLP:</strong> 3-tier sentiment pipeline — HuggingFace Inference API / Anthropic Claude / TextBlob<br><strong>Ops & UI:</strong> Docker Compose · Streamlit · MLflow · GitHub Actions CI/CD (with automated metric-floor tests)`,
+    solution: `A production-grade MLOps system featuring robust FastAPI endpoints. The core forecasting engine pits <strong>Prophet</strong> against a deep-learning <strong>N-BEATS</strong> baseline to predict ADR, Occupancy, and Revenue.<br><br>A rigorously evaluated <strong>XGBoost</strong> cancellation classifier drives an LP-based overbooking optimizer and a dynamic pricing engine. To ensure production viability, the model is evaluated exclusively on a temporal holdout set using <strong>walk-forward TimeSeriesSplit</strong>, and notorious target-leakage features (like <code>booking_changes</code>) from the public dataset were strictly removed.<br><br>The entire platform is containerized via Docker and heavily monitored with MLflow and nightly CI/CD API health checks. Built entirely from operational domain expertise earned at <strong>Nobu Hotel Toronto</strong> and <strong>Marriott</strong>.`,
+    pills: ['Python 3.11', 'FastAPI', 'XGBoost', 'NeuralForecast (N-BEATS)', 'Prophet', 'SHAP', 'PuLP', 'Streamlit', 'MLflow', 'Docker', 'GitHub Actions', 'HuggingFace'],
     links: [
       { href: 'https://github.com/nabindev3/Smart-Hotel-Analytics-', label: 'View on GitHub →', primary: true },
       { href: 'https://smart-hotel-analytics-platform-6ziv.onrender.com/', label: 'Live Demo ↗' }
     ],
     impactLabel: 'Measurable Outcomes',
     kpis: [
+      { num: '81.4%', label: 'Honest AUC — leak-free, temporal walk-forward evaluation' },
+      { num: '15.0%', label: 'Occupancy MAPE' },
       { num: '7.4%',  label: 'ADR Forecast MAPE' },
-      { num: '15.1%', label: 'Occupancy MAPE' },
-      { num: '86.4%', label: 'Cancellation ROC-AUC' },
-      { num: '18%',   label: 'Scheduling Savings (proj.)' },
+      { num: '18%',   label: 'Scheduling Savings (projected)' },
       { num: '3×',    label: 'Faster Reporting' }
     ],
-    result: `<strong>179,390</strong> booking records ingested · GBM accuracy <strong>77.6%</strong> · Data quality grade <strong>B</strong> — models trained on real, messy operational data (not a clean toy set)`,
-    tagline: `Hospitality domain expertise + ML engineering = problems most AI engineers don't even know to ask about.`
+    result: `<strong>179,390</strong> booking records ingested · Calibrated Brier Score <strong>0.163</strong> · Data quality grade <strong>B</strong> — models trained on real, messy operational data (not a clean toy set).`,
+    tagline: `Hospitality domain expertise + ML engineering = solving problems most AI engineers don't even know to ask about.`
   }
 ];
 
