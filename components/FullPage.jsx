@@ -30,23 +30,59 @@ const ID_TO_ROUTE = Object.fromEntries(
   Object.entries(ROUTE_TO_ID).map(([route, id]) => [id, route])
 );
 
+// Module-level locks to completely prevent scroll-hijacking and performance lag
+let isProgrammaticScroll = false;
+let programmaticScrollTimeout = null;
+let originalReplace = null;
+
 function scrollToId(id, smooth = true) {
   if (!id) return;
+  
   if (id === 'hero') {
+    isProgrammaticScroll = true;
     window.scrollTo({ top: 0, behavior: smooth ? 'smooth' : 'instant' });
-    return;
+  } else {
+    const el = document.getElementById(id);
+    if (!el) return;
+    const navH = document.getElementById('navbar')?.offsetHeight || 0;
+    const top = el.getBoundingClientRect().top + window.scrollY - navH + 1;
+    isProgrammaticScroll = true;
+    window.scrollTo({ top, behavior: smooth ? 'smooth' : 'instant' });
   }
-  const el = document.getElementById(id);
-  if (!el) return;
-  const navH = document.getElementById('navbar')?.offsetHeight || 0;
-  const top = el.getBoundingClientRect().top + window.scrollY - navH + 1;
-  window.scrollTo({ top, behavior: smooth ? 'smooth' : 'instant' });
+
+  // Clear existing settle timeouts
+  if (programmaticScrollTimeout) {
+    clearTimeout(programmaticScrollTimeout);
+  }
+
+  // Release scroll locks after scroll finishes (typically within 800ms)
+  programmaticScrollTimeout = setTimeout(() => {
+    isProgrammaticScroll = false;
+    // Dispatch a scroll event to trigger a final url & highlight synchronization
+    window.dispatchEvent(new Event('scroll'));
+  }, 1000);
 }
 
 export default function FullPage() {
   const router = useRouter();
   const didInitialJump = useRef(false);
   useReveal();
+
+  // Initialize pristine, unpatched replaceState via a temporary hidden iframe.
+  // Next.js patches history.replaceState, and intercepting it causes route transitions
+  // which disrupt active smooth-scrolls. Using the native method completely resolves this.
+  useEffect(() => {
+    try {
+      const iframe = document.createElement('iframe');
+      iframe.style.display = 'none';
+      document.body.appendChild(iframe);
+      const nativeReplace = iframe.contentWindow.history.replaceState;
+      originalReplace = nativeReplace.bind(window.history);
+      document.body.removeChild(iframe);
+    } catch (e) {
+      originalReplace = window.history.replaceState.bind(window.history);
+    }
+  }, []);
 
   // Initial load: jump (no animation) to the deep-linked section.
   useEffect(() => {
@@ -75,17 +111,14 @@ export default function FullPage() {
     return () => window.removeEventListener('popstate', handlePopState);
   }, []);
 
-  // Explicit scroll requests from the navbar (works even when the user clicks
-  // the link for the route they're already on — usePathname wouldn't re-fire).
+  // Explicit scroll requests from the navbar
   useEffect(() => {
     const onScrollRequest = (e) => scrollToId(ROUTE_TO_ID[e.detail], true);
     window.addEventListener('np:scroll-to', onScrollRequest);
     return () => window.removeEventListener('np:scroll-to', onScrollRequest);
   }, []);
 
-  // Update the navbar's active highlight as the user scrolls. We do NOT touch
-  // the URL — that avoids fighting Next's internal pathname state and keeps
-  // click navigation rock-solid.
+  // Update the navbar's active highlight and URL as the user scrolls
   useEffect(() => {
     const sections = Array.from(document.querySelectorAll('section[id]'))
       .filter((s) => ID_TO_ROUTE[s.id]);
@@ -96,6 +129,9 @@ export default function FullPage() {
 
     function update() {
       raf = 0;
+      // Skip updates if scrolling was triggered programmatically (e.g. by navbar clicks)
+      if (isProgrammaticScroll) return;
+
       const navH = document.getElementById('navbar')?.offsetHeight || 0;
       const anchorY = navH + (window.innerHeight - navH) * 0.30;
       let bestId = null;
@@ -111,7 +147,11 @@ export default function FullPage() {
         activeRoute = route;
         window.dispatchEvent(new CustomEvent('np:routechange', { detail: route }));
         if (window.location.pathname !== route) {
-          router.replace(route, { scroll: false });
+          if (originalReplace) {
+            originalReplace(null, '', route);
+          } else {
+            router.replace(route, { scroll: false });
+          }
         }
       }
     }
@@ -122,7 +162,7 @@ export default function FullPage() {
       window.removeEventListener('scroll', onScroll);
       if (raf) cancelAnimationFrame(raf);
     };
-  }, []);
+  }, [router]);
 
   return (
     <>
