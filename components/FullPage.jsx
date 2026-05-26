@@ -126,6 +126,26 @@ export default function FullPage() {
 
     let activeRoute = null;
     let raf = 0;
+    let sectionMetrics = [];
+
+    function recalculateMetrics() {
+      sectionMetrics = sections.map((s) => {
+        const rect = s.getBoundingClientRect();
+        return {
+          id: s.id,
+          top: rect.top + window.scrollY,
+          height: rect.height
+        };
+      });
+    }
+
+    recalculateMetrics();
+    window.addEventListener('resize', recalculateMetrics);
+    window.addEventListener('load', recalculateMetrics);
+    
+    // Safety updates for dynamic content changes during load
+    const t1 = setTimeout(recalculateMetrics, 200);
+    const t2 = setTimeout(recalculateMetrics, 1000);
 
     function update() {
       raf = 0;
@@ -134,14 +154,19 @@ export default function FullPage() {
 
       const navH = document.getElementById('navbar')?.offsetHeight || 0;
       const anchorY = navH + (window.innerHeight - navH) * 0.30;
+      const docAnchorY = window.scrollY + anchorY;
+
       let bestId = null;
       let bestDist = Infinity;
-      for (const s of sections) {
-        const r = s.getBoundingClientRect();
-        const mid = (r.top + r.bottom) / 2;
-        const dist = Math.abs(mid - anchorY);
-        if (dist < bestDist) { bestDist = dist; bestId = s.id; }
+      for (const m of sectionMetrics) {
+        const sMid = m.top + m.height / 2;
+        const dist = Math.abs(sMid - docAnchorY);
+        if (dist < bestDist) {
+          bestDist = dist;
+          bestId = m.id;
+        }
       }
+
       const route = ID_TO_ROUTE[bestId];
       if (route && route !== activeRoute) {
         activeRoute = route;
@@ -160,6 +185,10 @@ export default function FullPage() {
     update();
     return () => {
       window.removeEventListener('scroll', onScroll);
+      window.removeEventListener('resize', recalculateMetrics);
+      window.removeEventListener('load', recalculateMetrics);
+      clearTimeout(t1);
+      clearTimeout(t2);
       if (raf) cancelAnimationFrame(raf);
     };
   }, [router]);

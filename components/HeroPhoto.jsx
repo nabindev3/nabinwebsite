@@ -82,8 +82,7 @@ export default function HeroPhoto() {
 
     function animPhoto() {
       if (!visible) {
-        // canvas off-screen — skip animation, schedule cheap visibility re-check
-        raf = requestAnimationFrame(animPhoto);
+        raf = 0;
         return;
       }
       const W = wrap.offsetWidth;
@@ -159,7 +158,12 @@ export default function HeroPhoto() {
     photoCanvas.addEventListener('mouseleave', onLeave);
 
     // Pause animation when hero is scrolled off-screen
-    const io = new IntersectionObserver(([entry]) => { visible = entry.isIntersecting; }, { threshold: 0 });
+    const io = new IntersectionObserver(([entry]) => {
+      visible = entry.isIntersecting;
+      if (visible && !raf) {
+        animPhoto();
+      }
+    }, { threshold: 0 });
     io.observe(photoCanvas);
 
     return () => {
