@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useRef } from 'react';
+import { useRouter } from 'next/navigation';
 import Hero from './Hero.jsx';
 import Marquee from './Marquee.jsx';
 import About from './About.jsx';
@@ -43,6 +44,7 @@ function scrollToId(id, smooth = true) {
 }
 
 export default function FullPage() {
+  const router = useRouter();
   const didInitialJump = useRef(false);
   useReveal();
 
@@ -109,7 +111,7 @@ export default function FullPage() {
         activeRoute = route;
         window.dispatchEvent(new CustomEvent('np:routechange', { detail: route }));
         if (window.location.pathname !== route) {
-          window.history.replaceState(null, '', route);
+          router.replace(route, { scroll: false });
         }
       }
     }
