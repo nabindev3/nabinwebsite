@@ -1,29 +1,22 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import Link from 'next/link';
-import { usePathname } from 'next/navigation';
 import { NAV_LINKS } from '../data/content.js';
 
 export default function Navbar() {
   const [compact, setCompact] = useState(false);
   const [open, setOpen] = useState(false);
-  const pathname = usePathname();
-  // Active route tracked separately so scroll-driven URL changes
-  // (history.replaceState in FullPage) keep the nav highlight in sync
-  const [activeRoute, setActiveRoute] = useState(pathname);
+  const [activeRoute, setActiveRoute] = useState('/');
+
+  useEffect(() => {
+    setActiveRoute(window.location.pathname);
+  }, []);
 
   useEffect(() => {
     const onScroll = () => setCompact(window.scrollY > 60);
     window.addEventListener('scroll', onScroll, { passive: true });
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
-
-  // Real Next route changes (clicks)
-  useEffect(() => {
-    setActiveRoute(pathname);
-    setOpen(false);
-  }, [pathname]);
 
   // Scroll-driven URL changes from FullPage
   useEffect(() => {
@@ -32,7 +25,8 @@ export default function Navbar() {
     return () => window.removeEventListener('np:routechange', onRouteSync);
   }, []);
 
-  const handleLinkClick = (href) => {
+  const handleLinkClick = (e, href) => {
+    e.preventDefault();
     window.dispatchEvent(new CustomEvent('np:scroll-to', { detail: href }));
     setOpen(false);
   };
@@ -45,37 +39,34 @@ export default function Navbar() {
   return (
     <>
       <nav id="navbar" className={`site-nav${compact ? ' compact' : ''}`}>
-        <Link
+        <a
           href="/"
-          scroll={false}
-          onClick={() => handleLinkClick('/')}
+          onClick={(e) => handleLinkClick(e, '/')}
           className="nav-logo"
           aria-label="Nabin Prasad Dev — Home"
         >
           <img className="nav-logo-mark" src="/favicon-32.png?v=4" alt="" width="32" height="32" />
-        </Link>
+        </a>
         <ul className="nav-links">
           {NAV_LINKS.map((l) => (
             <li key={l.href}>
-              <Link
+              <a
                 href={l.href}
-                scroll={false}
-                onClick={() => handleLinkClick(l.href)}
+                onClick={(e) => handleLinkClick(e, l.href)}
                 className={isActive(l.href) ? 'active' : ''}
               >
                 {l.label}
-              </Link>
+              </a>
             </li>
           ))}
           <li>
-            <Link
+            <a
               href="/contact"
-              scroll={false}
-              onClick={() => handleLinkClick('/contact')}
+              onClick={(e) => handleLinkClick(e, '/contact')}
               className={`nav-cta${isActive('/contact') ? ' active' : ''}`}
             >
               Let&apos;s Chat
-            </Link>
+            </a>
           </li>
         </ul>
         <button
@@ -89,22 +80,20 @@ export default function Navbar() {
 
       <div className={`mob-menu${open ? ' open' : ''}`} id="mob-menu">
         {NAV_LINKS.map((l) => (
-          <Link
+          <a
             key={l.href}
             href={l.href}
-            scroll={false}
-            onClick={() => handleLinkClick(l.href)}
+            onClick={(e) => handleLinkClick(e, l.href)}
           >
             {l.label}
-          </Link>
+          </a>
         ))}
-        <Link
+        <a
           href="/contact"
-          scroll={false}
-          onClick={() => handleLinkClick('/contact')}
+          onClick={(e) => handleLinkClick(e, '/contact')}
         >
           Contact
-        </Link>
+        </a>
       </div>
     </>
   );
