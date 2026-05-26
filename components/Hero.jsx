@@ -1,4 +1,5 @@
 import { HERO } from '../data/content.js';
+import Link from 'next/link';
 import HeroDots from './HeroDots.jsx';
 import HeroPhoto from './HeroPhoto.jsx';
 
@@ -30,10 +31,15 @@ export default function Hero() {
         </div>
 
         <div className="hero-actions">
-          <a href="#projects" className="btn-primary">
+          <Link
+            href="/projects"
+            scroll={false}
+            className="btn-primary"
+            onClick={() => window.dispatchEvent(new CustomEvent('np:scroll-to', { detail: '/projects' }))}
+          >
             <svg width="14" height="14" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
             View My Work
-          </a>
+          </Link>
           <a href="mailto:hi@nabinpdev.com" className="btn-ghost">Get In Touch</a>
         </div>
       </div>
