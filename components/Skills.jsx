@@ -32,7 +32,6 @@ export default function Skills() {
         <div className="reveal" style={{ transitionDelay: '.25s' }}>
           <div className="skills-canvas-wrap">
             <SkillsBubbleCanvas />
-            <p className="skills-canvas-hint">✦ &nbsp;HOVER TO INTERACT</p>
           </div>
         </div>
       </div>

@@ -180,7 +180,6 @@ export default function HeroPhoto() {
     <div className="hero-visual">
       <div className="hero-photo-wrap" ref={wrapRef}>
         <canvas id="photo-canvas" ref={canvasRef} />
-        <div className="photo-hint">✦ &nbsp;HOVER TO INTERACT</div>
       </div>
     </div>
   );

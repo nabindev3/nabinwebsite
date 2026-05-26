@@ -46,11 +46,6 @@ export default function Hero() {
       </div>
 
       <HeroPhoto />
-
-      <div className="hero-scroll">
-        <div className="hero-scroll-line" />
-        <span>/ scroll</span>
-      </div>
     </section>
   );
 }
