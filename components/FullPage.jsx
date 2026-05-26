@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import { usePathname } from 'next/navigation';
 import Hero from './Hero.jsx';
 import Marquee from './Marquee.jsx';
@@ -15,7 +15,6 @@ import Photos from './Photos.jsx';
 import Contact from './Contact.jsx';
 import { useReveal } from '../hooks/useReveal.js';
 
-// Mapping between route paths and the DOM section that should be in view.
 const ROUTE_TO_ID = {
   '/':           'hero',
   '/about':      'about',
@@ -31,78 +30,81 @@ const ID_TO_ROUTE = Object.fromEntries(
   Object.entries(ROUTE_TO_ID).map(([route, id]) => [id, route])
 );
 
+function scrollToId(id, smooth = true) {
+  if (!id) return;
+  if (id === 'hero') {
+    window.scrollTo({ top: 0, behavior: smooth ? 'smooth' : 'instant' });
+    return;
+  }
+  const el = document.getElementById(id);
+  if (!el) return;
+  const navH = document.getElementById('navbar')?.offsetHeight || 0;
+  const top = el.getBoundingClientRect().top + window.scrollY - navH + 1;
+  window.scrollTo({ top, behavior: smooth ? 'smooth' : 'instant' });
+}
+
 export default function FullPage() {
   const pathname = usePathname();
+  const didInitialJump = useRef(false);
   useReveal();
 
-  // On mount + on real route change (click), scroll to the section
+  // Initial load: jump (no animation) to the deep-linked section.
+  // Subsequent route changes from clicks: smooth-scroll.
   useEffect(() => {
     const id = ROUTE_TO_ID[pathname];
     if (!id) return;
-
-    // Wait one frame so layout has settled (and Hero canvas has sized)
     const raf = requestAnimationFrame(() => {
-      if (id === 'hero') {
-        window.scrollTo({ top: 0, behavior: 'instant' });
-      } else {
-        const el = document.getElementById(id);
-        if (el) {
-          // Subtract the fixed nav height
-          const nav = document.getElementById('navbar');
-          const navH = nav ? nav.offsetHeight : 0;
-          const top = el.getBoundingClientRect().top + window.scrollY - navH;
-          window.scrollTo({ top, behavior: 'instant' });
-        }
-      }
+      scrollToId(id, didInitialJump.current);
+      didInitialJump.current = true;
     });
     return () => cancelAnimationFrame(raf);
   }, [pathname]);
 
-  // As the user scrolls, swap the URL bar to the route of the section
-  // that's most prominently in view. Uses history.replaceState so we
-  // don't pollute browser history and don't trigger React re-mounts.
+  // Explicit scroll requests from the navbar (works even when the user clicks
+  // the link for the route they're already on — usePathname wouldn't re-fire).
+  useEffect(() => {
+    const onScrollRequest = (e) => scrollToId(ROUTE_TO_ID[e.detail], true);
+    window.addEventListener('np:scroll-to', onScrollRequest);
+    return () => window.removeEventListener('np:scroll-to', onScrollRequest);
+  }, []);
+
+  // Update the navbar's active highlight as the user scrolls. We do NOT touch
+  // the URL — that avoids fighting Next's internal pathname state and keeps
+  // click navigation rock-solid.
   useEffect(() => {
     const sections = Array.from(document.querySelectorAll('section[id]'))
       .filter((s) => ID_TO_ROUTE[s.id]);
     if (!sections.length) return;
 
-    let currentRoute = pathname;
+    let activeRoute = null;
     let raf = 0;
 
     function update() {
       raf = 0;
       const navH = document.getElementById('navbar')?.offsetHeight || 0;
-      // Anchor line: ~33% from the top of the viewport
-      const anchorY = navH + (window.innerHeight - navH) * 0.33;
-      let best = null;
+      const anchorY = navH + (window.innerHeight - navH) * 0.30;
+      let bestId = null;
       let bestDist = Infinity;
       for (const s of sections) {
         const r = s.getBoundingClientRect();
-        // Distance from anchor line to mid of section
         const mid = (r.top + r.bottom) / 2;
         const dist = Math.abs(mid - anchorY);
-        if (dist < bestDist) { bestDist = dist; best = s; }
+        if (dist < bestDist) { bestDist = dist; bestId = s.id; }
       }
-      if (!best) return;
-      const route = ID_TO_ROUTE[best.id];
-      if (route && route !== currentRoute) {
-        currentRoute = route;
-        window.history.replaceState(null, '', route);
-        // Tell the navbar to update its active highlight
+      const route = ID_TO_ROUTE[bestId];
+      if (route && route !== activeRoute) {
+        activeRoute = route;
         window.dispatchEvent(new CustomEvent('np:routechange', { detail: route }));
       }
     }
-
-    function onScroll() {
-      if (!raf) raf = requestAnimationFrame(update);
-    }
+    function onScroll() { if (!raf) raf = requestAnimationFrame(update); }
     window.addEventListener('scroll', onScroll, { passive: true });
     update();
     return () => {
       window.removeEventListener('scroll', onScroll);
       if (raf) cancelAnimationFrame(raf);
     };
-  }, [pathname]);
+  }, []);
 
   return (
     <>
