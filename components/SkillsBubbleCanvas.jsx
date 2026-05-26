@@ -9,22 +9,22 @@ const C_MUTED   = '#c4c7c7';
 const C_DIM     = '#8e9192';
 
 const SKILLS_DATA = [
-  { label: 'Python',          color: C_PRIMARY },
-  { label: 'TensorFlow',      color: C_DEEP    },
-  { label: 'PyTorch',         color: C_ACCENT  },
-  { label: 'GANs',            color: C_PRIMARY },
-  { label: 'Scikit-Learn',    color: C_MUTED   },
-  { label: 'SQL',             color: C_DIM     },
-  { label: 'Deep Learning',   color: C_DEEP    },
-  { label: 'Computer Vision', color: C_PRIMARY },
-  { label: 'NLP',             color: C_ACCENT  },
-  { label: 'Pandas / NumPy',  color: C_MUTED   },
-  { label: 'FastAPI',         color: C_PRIMARY },
-  { label: 'Docker',          color: C_DEEP    },
-  { label: 'MLflow',          color: C_DIM     },
-  { label: 'Streamlit',       color: C_ACCENT  },
-  { label: 'OpenCV',          color: C_PRIMARY },
-  { label: 'Jupyter',         color: C_MUTED   }
+  { label: 'Mechanistic Interpretability', color: C_DEEP    },
+  { label: 'Sparse Autoencoders (SAEs)', color: C_PRIMARY },
+  { label: 'PyTorch',                     color: C_ACCENT  },
+  { label: 'Inference Routers',           color: C_DEEP    },
+  { label: 'TSFMs & Chronos-T5',          color: C_ACCENT  },
+  { label: 'Activation Patching',         color: C_PRIMARY },
+  { label: 'Numerical Optimization',      color: C_MUTED   },
+  { label: 'FastAPI Services',            color: C_PRIMARY },
+  { label: 'Automated CI/CD',             color: C_DIM     },
+  { label: 'Data Modernization',          color: C_ACCENT  },
+  { label: 'Walk-Forward CV',             color: C_MUTED   },
+  { label: 'FAISS Vector Search',         color: C_DEEP    },
+  { label: 'Presidio PII Filters',        color: C_DIM     },
+  { label: 'Scientific Seismics',         color: C_PRIMARY },
+  { label: 'Decision Science',            color: C_ACCENT  },
+  { label: 'Operational Risk Audits',     color: C_MUTED   }
 ];
 
 export default function SkillsBubbleCanvas() {
@@ -132,7 +132,10 @@ export default function SkillsBubbleCanvas() {
     initBubbles();
 
     function anim() {
-      if (!visible) { raf = requestAnimationFrame(anim); return; }
+      if (!visible) {
+        raf = 0;
+        return;
+      }
       sCtx.clearRect(0, 0, sCanvas.offsetWidth, sCanvas.offsetHeight);
       handleCollisions();
       bubbles.forEach((b) => b.update(sMouse.x, sMouse.y, sMouse.vx, sMouse.vy));
@@ -142,7 +145,12 @@ export default function SkillsBubbleCanvas() {
     }
     anim();
 
-    const io = new IntersectionObserver(([entry]) => { visible = entry.isIntersecting; }, { threshold: 0 });
+    const io = new IntersectionObserver(([entry]) => {
+      visible = entry.isIntersecting;
+      if (visible && !raf) {
+        anim();
+      }
+    }, { threshold: 0 });
     io.observe(sCanvas);
 
     const onMove = (e) => {
