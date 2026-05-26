@@ -1,135 +1,142 @@
-# nabinpdev.com
+# 🌌 nabinpdev.com
 
-Personal portfolio of **Nabin Prasad Dev** — AI/ML Engineer & Operational Leader.
+<div align="center">
+  <img src="public/favicon-512.png" alt="Nabin Prasad Dev Logo" width="128" height="128" style="border-radius: 50%; box-shadow: 0 4px 20px rgba(180,196,255,0.15);" />
+  
+  <h3>Nabin Prasad Dev</h3>
+  <p><em>AI/ML Engineer · Operations Specialist · Urban Policy Researcher</em></p>
 
-🔗 **Live:** [nabinpdev.com](https://nabinpdev.com) · [github.io mirror](https://nabindev3.github.io/nabinwebsite/)
+  <p>
+    <a href="https://nabinpdev.com"><strong>Explore Live Site →</strong></a>
+    ·
+    <a href="https://nabindev3.github.io/nabinwebsite/"><strong>GitHub Mirror ↗</strong></a>
+  </p>
 
-A cinematic-noir multi-page site built around interactive canvas effects, paired-bootstrap research projects, and a hospitality-informed engineering background.
-
----
-
-## Stack
-
-| Layer | Tooling |
-| --- | --- |
-| Framework | [Next.js 14](https://nextjs.org) (App Router, static export) |
-| UI | React 18 · [react-bootstrap](https://react-bootstrap.netlify.app) · custom design system |
-| Animation | [framer-motion](https://www.framer.com/motion/) (page transitions) · `<canvas>` (hero pixel-scatter, constellation field, skills physics) |
-| Fonts | [next/font](https://nextjs.org/docs/app/api-reference/components/font) — Space Grotesk + Inter |
-| Hosting | GitHub Pages on a custom domain (Cloudflare DNS) |
-| CI/CD | GitHub Actions — `next build` → `out/` → Pages |
-
-The site is statically exported (`output: 'export'` in `next.config.mjs`), so every route is pre-rendered HTML — instant first paint, no server runtime, free hosting.
+  <p>A cinematic-noir single-page portfolio engineered with <strong>high-performance canvas simulations</strong>, leak-free ML analytics interfaces, and a robust decoupled scrolling architecture built on <strong>Next.js 14</strong>.</p>
+</div>
 
 ---
 
-## Structure
+## ✨ Features & Architecture
+
+This portfolio is not a simple static page — it is a production-grade frontend build designed around extreme responsiveness, visual excellence, and zero-compromise runtime performance.
+
+*   🌌 **Constellation Background Canvas (`HeroDots`)**: A real-time, mouse-reactive geometric network particle constellation. Automatically suspends its render threads when scrolled off-screen to preserve CPU cycles.
+*   📸 **Interactive Scatter Portrait (`HeroPhoto`)**: High-performance canvas pixel-scattering particle engine that reconstructs his profile photo on hover. Operates on a highly optimized vector grid to minimize draw calls.
+*   🧬 **Liquid Physics Canvas (`SkillsBubbleCanvas`)**: Fully interactive HTML5 canvas bubble physics engine reflecting technical expertise.
+*   ⚡ **Butter-Smooth Scrolling (Zero-Reflow)**: Decoupled scroll tracking that caches DOM geometries on window resize/load, eliminating browser layout thrashing (`getBoundingClientRect`) during manual scroll frames.
+*   🔒 **Iframe Sandbox Navigation Bypass**: Bypasses Next.js App Router's scroll restoration intercepts by using a sandboxed `iframe.contentWindow.history.replaceState` prototype. Updates URLs seamlessly in the background without frame drops or smooth-scroll interruptions.
+
+---
+
+## 🛠️ The Tech Stack
+
+| Layer | Technology | Purpose |
+| :--- | :--- | :--- |
+| **Core Framework** | [Next.js 14](https://nextjs.org) (App Router) | Static HTML pre-rendering with `output: 'export'` for sub-millisecond loads. |
+| **Design System** | Vanilla CSS · HSL Palette | Bespoke cinematic-noir palette, glassmorphism, responsive grid layout. |
+| **Libraries** | React 18 · React Bootstrap | Clean component management & structural grid modules. |
+| **Typography** | Space Grotesk · Inter | Premium modern geometric fonts via `next/font`. |
+| **CI / CD** | GitHub Actions | Automatic static bundling, Jekyll bypass, and instant deployment to Pages. |
+| **Hosting** | GitHub Pages · Cloudflare DNS | Edge-network static caching with automated SSL certificates. |
+
+---
+
+## 📂 Codebase Directory
 
 ```
 .
-├── app/                       # Next.js App Router
-│   ├── layout.jsx             # Root layout — fonts, Navbar, Footer, BackToTop, Cursor
-│   ├── template.jsx           # Per-route framer-motion + reveal observer
-│   ├── globals.css            # Cinematic-noir design system
-│   ├── page.jsx               # /            (Hero + Marquee)
-│   ├── about/page.jsx         # /about
-│   ├── skills/page.jsx        # /skills      (Skills + ML Lifecycle)
-│   ├── experience/page.jsx    # /experience
-│   ├── projects/page.jsx      # /projects
-│   ├── research/page.jsx      # /research
-│   ├── education/page.jsx     # /education
-│   ├── photos/page.jsx        # /photos
-│   └── contact/page.jsx       # /contact
-├── components/                # All React components ('use client' where needed)
-│   ├── Hero · HeroDots · HeroPhoto      # Canvas hero stack
-│   ├── SkillsBubbleCanvas · Skills      # Interactive skills bubble physics
-│   ├── About · Workflow · Experience    # Static content sections
-│   ├── Projects · Research · Education  # Data-driven cards
-│   ├── Photos                            # Drag-to-scroll gallery
-│   ├── Navbar · Footer · Cursor · BackToTop
-│   └── Marquee · Contact
-├── data/
-│   ├── content.js             # All copy + structured data (single source of truth)
-│   └── images.js              # base64 photo bundle (linguist-generated)
-├── hooks/
-│   ├── useReveal.js           # Intersection-observer reveal animation
-│   └── useMediaQuery.js
-├── public/                    # Static assets — favicons, CNAME, nn.jpeg
-├── legacy/                    # Pre-migration single-file site (linguist-vendored)
-├── next.config.mjs            # output: 'export', images.unoptimized, trailingSlash
-└── .github/workflows/deploy.yml
+├── app/                       # Next.js App Router Core
+│   ├── layout.jsx             # Global layout & layout-level components
+│   ├── template.jsx           # Per-route transitions
+│   ├── globals.css            # Cinematic-noir styling tokens
+│   └── page.jsx               # Empty stub route (content served in FullPage)
+│
+├── components/                # Modular React Elements
+│   ├── Hero · HeroDots · HeroPhoto      # Canvas-heavy Hero visuals
+│   ├── SkillsBubbleCanvas · Skills      # Physics-based interactive canvas
+│   ├── About · Workflow · Experience    # Structured content & timelines
+│   ├── Projects · Research · Education  # High-impact data cards
+│   ├── Photos                           # Drag-to-scroll travel catalog
+│   └── Navbar · Footer · Cursor         # Persistent global structures
+│
+├── data/                      # Single Source of Truth
+│   ├── content.js             # copy, metrics, links, & paper abstracts
+│   └── images.js              # optimized base64 profile picture
+│
+├── hooks/                     # Custom Performance Hooks
+│   └── useReveal.js           # Intersection Observer scroll trigger
+│
+├── public/                    # Raw static assets & CNAME rules
+└── .github/workflows/         # Automated Next.js Static Pages Deployer
 ```
 
 ---
 
-## Local development
+## 🚀 Local Setup & Development
 
-Requires **Node ≥ 18**.
+### Prerequisites
+Requires **Node.js ≥ 18** installed on your system.
 
 ```bash
+# 1. Clone the repository
 git clone https://github.com/nabindev3/nabinwebsite.git
 cd nabinwebsite
+
+# 2. Install dependencies
 npm install
-npm run dev          # http://localhost:3000
+
+# 3. Spin up local development server
+npm run dev
+# The website will be available at http://localhost:3000
 ```
 
-Production build (matches what CI ships):
+### Production Build & Preview
+To run the static export pipeline and compile the static bundle locally:
 
 ```bash
-npm run build        # outputs to ./out/
-npx serve out        # preview the static export
+npm run build        # Generates pre-rendered HTML/JS bundle into ./out/
+npx serve out        # Host and preview the local production static export
 ```
 
 ---
 
-## Editing content
+## 📊 High-Impact Projects Featured
 
-Almost everything reads from **`data/content.js`** — change copy, KPIs, project lists, education, etc. there and components re-render automatically. No JSX edits required for content updates.
+*   🔬 **TSFM Routing Probe** — *Label-Free Difficulty Signals & Recalibrated Selective Forecasting for Chronos-T5*  
+    *Repo:* [SAE-framework-or-time-series-analysis](https://github.com/nabindev3/SAE-framework-or-time-series-analysis)
+*   🧠 **LLM Routing Probe** — *Label-Free Difficulty Signals & Recalibrated Selective QA for Pythia*  
+    *Repo:* [LLM-Routing-Probe](https://github.com/nabindev3)
+*   🔀 **Cascade Engine** — *Multi-Tier LLM Inference Router with 60% Cost Reductions*  
+    *Repo:* [Cascade-Engine](https://github.com/nabindev3/Cascade-Engine)
+*   🏨 **Hotel Revenue ML Platform** — *Production-Grade forecasting & XGBoost cancellation engine*  
+    *Repo:* [Smart-Hotel-Analytics-](https://github.com/nabindev3/Smart-Hotel-Analytics-) · [Live Demo](https://smart-hotel-analytics-platform-6ziv.onrender.com/)
+
+---
+
+## ⚙️ Content Editing Workflow
+
+To update texts, projects, metrics, or links, you **never** need to touch the component code. Simply edit the centralized **`data/content.js`** file. All layouts will dynamically adjust to your updates.
 
 ```js
 // data/content.js
-export const HERO = { name: 'Nabin Prasad Dev', role: '…', tags: […] };
-export const FEATURED_PROJECTS = [ { title, problem, stack, solution, kpis, … } ];
-export const RESEARCH = [ { type, title, abstract, tags } ];
-// …etc
+export const HERO = {
+  name: 'Nabin Prasad Dev',
+  role: 'AI/ML Engineer.',
+  desc: '...'
+};
 ```
 
 ---
 
-## Featured projects
+## 📬 Contact & Networks
 
-- **TSFM Routing Probe** — Label-Free Difficulty Signals & Recalibrated Selective Forecasting for Chronos-T5  
-  *Repo:* [SAE-framework-or-time-series-analysis](https://github.com/nabindev3/SAE-framework-or-time-series-analysis)
-- **LLM Routing Probe** — Label-Free Difficulty Signals & Recalibrated Selective QA for Pythia
-- **Cascade Engine** — Multi-Tier LLM Inference Router  
-  *Repo:* [Cascade-Engine](https://github.com/nabindev3/Cascade-Engine)
-- **Hotel Revenue ML Platform** — XGBoost + N-BEATS, leak-controlled 81.4% honest AUC  
-  *Repo:* [Smart-Hotel-Analytics-](https://github.com/nabindev3/Smart-Hotel-Analytics-) · [Live demo](https://smart-hotel-analytics-platform-6ziv.onrender.com/)
+*   **Email:** [hi@nabinpdev.com](mailto:hi@nabinpdev.com)
+*   **LinkedIn:** [linkedin.com/in/nabin-prasad-dev](https://www.linkedin.com/in/nabin-prasad-dev-a9a3121b7)
+*   **GitHub:** [@nabindev3](https://github.com/nabindev3)
 
 ---
 
-## Deployment
-
-Pushing to `main` triggers `.github/workflows/deploy.yml`:
-
-1. `actions/checkout@v5`
-2. `actions/setup-node@v5` (Node 24)
-3. `npm install`
-4. `npm run build` → `out/`
-5. `touch out/.nojekyll` (lets GitHub Pages serve Next's `_next/` directory)
-6. `actions/upload-pages-artifact@v5`
-7. `actions/deploy-pages@v5`
-
-The custom domain survives every deploy because `public/CNAME` (`nabinpdev.com`) is copied verbatim into `out/`.
-
----
-
-## Contact
-
-**Email:** [hi@nabinpdev.com](mailto:hi@nabinpdev.com) (forwarded to my personal inbox)  
-**LinkedIn:** [nabin-prasad-dev](https://www.linkedin.com/in/nabin-prasad-dev-a9a3121b7)  
-**GitHub:** [@nabindev3](https://github.com/nabindev3)
-
----
-
-© 2026 Nabin Prasad Dev.
+<div align="center">
+  <p>© 2026 Nabin Prasad Dev. All rights reserved.</p>
+</div>
