@@ -95,6 +95,9 @@ export default function FullPage() {
       if (route && route !== activeRoute) {
         activeRoute = route;
         window.dispatchEvent(new CustomEvent('np:routechange', { detail: route }));
+        if (window.location.pathname !== route) {
+          window.history.replaceState(null, '', route);
+        }
       }
     }
     function onScroll() { if (!raf) raf = requestAnimationFrame(update); }
