@@ -50,7 +50,10 @@ export default function HeroDots() {
 
     let t = 0;
     function anim() {
-      if (!visible) { raf = requestAnimationFrame(anim); return; }
+      if (!visible) {
+        raf = 0;
+        return;
+      }
       const W = hero.offsetWidth, H = hero.offsetHeight;
       ctx.clearRect(0, 0, W, H);
       t += 0.012;
@@ -103,7 +106,12 @@ export default function HeroDots() {
     }
     anim();
 
-    const io = new IntersectionObserver(([entry]) => { visible = entry.isIntersecting; }, { threshold: 0 });
+    const io = new IntersectionObserver(([entry]) => {
+      visible = entry.isIntersecting;
+      if (visible && !raf) {
+        anim();
+      }
+    }, { threshold: 0 });
     io.observe(hero);
 
     return () => {
