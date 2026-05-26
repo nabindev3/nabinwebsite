@@ -180,8 +180,8 @@ export const FEATURED_PROJECTS = [
     solution: `A leakage-controlled, paired-bootstrap-rigorous pipeline that evaluates internal representations across two benchmark modalities: <strong>HellaSwag</strong> (binary multiple-choice correctness) and <strong>SQuAD</strong> (continuous perplexity-based generative difficulty).<br><br>The pipeline enforces hard methodological safeguards: <strong>(1) Pile pretraining-contamination purge</strong> — drops validation prompts with pretraining-Pile exposure (prompt perplexity ≤ 1.5) to prevent memorized-internal leaks. <strong>(2) Lexical deduplication</strong> — TF-IDF cosine-similarity prompt-cluster filter at ≥ 0.7 between train and test splits. <strong>(3) Train-split-only SAE fitting</strong> — SAE is trained exclusively on train-split residual-stream activations, eliminating validation leakage. <strong>(4) Group-stratified CV</strong> — hyperparameter sweeps stratified strictly by category keys to prevent topic leakage.`,
     pills: ['Python', 'PyTorch', 'Pythia-410M / 2.8B', 'TopK SAE', 'scikit-learn', 'Transformers', 'safetensors', 'Parquet', 'Matplotlib', 'LaTeX'],
     links: [
-      { href: 'https://github.com/nabindev3', label: 'View on GitHub →', primary: true },
-      { href: 'https://github.com/nabindev3', label: 'Workshop Report (LaTeX) →' }
+      { href: 'https://github.com/nabindev3/llm-sae-difficulty', label: 'View on GitHub →', primary: true },
+      { href: 'https://github.com/nabindev3/llm-sae-difficulty/tree/main/paper', label: 'Workshop Report (LaTeX) →' }
     ],
     impactLabel: 'Impact & Academic Rigor',
     kpis: [
