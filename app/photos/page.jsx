@@ -1,7 +1,4 @@
-import Photos from '../../components/Photos.jsx';
-
+// Route stub — content is rendered once by <FullPage> in app/layout.jsx.
+// Keeping the file so Next still treats /photos/ as a real route.
 export const metadata = { title: 'Photos' };
-
-export default function PhotosPage() {
-  return <Photos />;
-}
+export default function Page() { return null; }

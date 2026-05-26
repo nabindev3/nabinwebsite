@@ -1,11 +1,3 @@
-import Hero from '../components/Hero.jsx';
-import Marquee from '../components/Marquee.jsx';
-
-export default function HomePage() {
-  return (
-    <>
-      <Hero />
-      <Marquee />
-    </>
-  );
-}
+// Route stub — content is rendered once by <FullPage> in app/layout.jsx.
+// Keeping the file so Next still treats / as a real route.
+export default function Page() { return null; }

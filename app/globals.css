@@ -1266,54 +1266,6 @@ footer {
   .stats-grid { grid-template-columns: 1fr; }
   .kpi-row { grid-template-columns: 1fr 1fr; }
 }
-/* Scroll-boundary affordance — shows the next/prev page label
-   when the user is overscrolling past the page edge. */
-.scroll-affordance {
-  position: fixed;
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 410;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.4rem;
-  padding: 0.75rem 1.25rem 0.9rem;
-  background: rgba(13, 14, 15, 0.78);
-  backdrop-filter: blur(18px);
-  -webkit-backdrop-filter: blur(18px);
-  border: 1px solid var(--outline-var);
-  pointer-events: none;
-  animation: scrollAffordIn .18s ease both;
-}
-.scroll-affordance.bottom { bottom: 1.5rem; }
-.scroll-affordance.top    { top: calc(var(--nav-h, 88px) + 1rem); }
-.scroll-affordance span {
-  font-size: 0.62rem;
-  font-weight: 600;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--outline);
-}
-.scroll-affordance strong {
-  font-family: var(--font-head);
-  font-size: 0.95rem;
-  font-weight: 600;
-  color: var(--on-surface);
-  letter-spacing: -0.01em;
-}
-.scroll-affordance-bar {
-  width: 120px;
-  height: 2px;
-  background: var(--tertiary);
-  transform-origin: left;
-  transition: transform 0.08s linear;
-  margin-top: 0.25rem;
-}
-@keyframes scrollAffordIn {
-  from { opacity: 0; transform: translate(-50%, 8px); }
-  to   { opacity: 1; transform: translate(-50%, 0); }
-}
-
 /* Touch devices: disable custom cursor, restore native pointer.
    Was suppressing tap interactions on some mobile Safari versions. */
 @media (hover: none), (pointer: coarse) {

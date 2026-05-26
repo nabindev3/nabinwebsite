@@ -4,6 +4,7 @@ import Cursor from '../components/Cursor.jsx';
 import Navbar from '../components/Navbar.jsx';
 import Footer from '../components/Footer.jsx';
 import BackToTop from '../components/BackToTop.jsx';
+import FullPage from '../components/FullPage.jsx';
 
 const spaceGrotesk = Space_Grotesk({
   subsets: ['latin'],
@@ -47,7 +48,11 @@ export default function RootLayout({ children }) {
       <body>
         <Cursor />
         <Navbar />
+        {/* Per-route page.jsx is now an empty stub used only for metadata.
+            FullPage renders every section once and stays mounted across routes
+            so scrolling is continuous and canvases don't re-init on nav. */}
         {children}
+        <FullPage />
         <Footer />
         <BackToTop />
       </body>
