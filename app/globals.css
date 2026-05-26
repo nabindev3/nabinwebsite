@@ -143,6 +143,7 @@ nav.site-nav.compact { padding: 1rem var(--gutter); }
   transition: color var(--transition);
 }
 .nav-links a:hover { color: var(--on-surface); }
+.nav-links a.active { color: var(--tertiary); }
 .nav-cta {
   padding: 0.55rem 1.4rem;
   border: 1px solid var(--on-surface);

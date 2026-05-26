@@ -1,9 +1,14 @@
+'use client';
+
 import { useEffect, useState } from 'react';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { NAV_LINKS } from '../data/content.js';
 
 export default function Navbar() {
   const [compact, setCompact] = useState(false);
   const [open, setOpen] = useState(false);
+  const pathname = usePathname();
 
   useEffect(() => {
     const onScroll = () => setCompact(window.scrollY > 60);
@@ -11,17 +16,27 @@ export default function Navbar() {
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
+  // Close mobile menu on route change
+  useEffect(() => { setOpen(false); }, [pathname]);
+
+  const isActive = (href) => {
+    if (href === '/') return pathname === '/';
+    return pathname === href || pathname.startsWith(href + '/');
+  };
+
   return (
     <>
       <nav id="navbar" className={`site-nav${compact ? ' compact' : ''}`}>
-        <a href="#hero" className="nav-logo" aria-label="Nabin Prasad Dev — Home">
+        <Link href="/" className="nav-logo" aria-label="Nabin Prasad Dev — Home">
           <img className="nav-logo-mark" src="/favicon-32.png?v=4" alt="" width="32" height="32" />
-        </a>
+        </Link>
         <ul className="nav-links">
           {NAV_LINKS.map((l) => (
-            <li key={l.href}><a href={l.href}>{l.label}</a></li>
+            <li key={l.href}>
+              <Link href={l.href} className={isActive(l.href) ? 'active' : ''}>{l.label}</Link>
+            </li>
           ))}
-          <li><a href="#contact" className="nav-cta">Let&apos;s Chat</a></li>
+          <li><Link href="/contact" className={`nav-cta${isActive('/contact') ? ' active' : ''}`}>Let&apos;s Chat</Link></li>
         </ul>
         <button
           className={`hamburger${open ? ' open' : ''}`}
@@ -34,9 +49,9 @@ export default function Navbar() {
 
       <div className={`mob-menu${open ? ' open' : ''}`} id="mob-menu">
         {NAV_LINKS.map((l) => (
-          <a key={l.href} href={l.href} onClick={() => setOpen(false)}>{l.label}</a>
+          <Link key={l.href} href={l.href}>{l.label}</Link>
         ))}
-        <a href="#contact" onClick={() => setOpen(false)}>Contact</a>
+        <Link href="/contact">Contact</Link>
       </div>
     </>
   );

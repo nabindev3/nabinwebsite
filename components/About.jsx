@@ -38,7 +38,7 @@ export default function About() {
 
         <div className="about-side">
           <div className="about-photo reveal" style={{ transitionDelay: '.2s' }}>
-            <img src={`${import.meta.env.BASE_URL}nn.jpeg`} alt="Nabin Prasad Dev" />
+            <img src="/nn.jpeg" alt="Nabin Prasad Dev" />
           </div>
           <div className="about-info reveal" style={{ transitionDelay: '.3s' }}>
             {ABOUT.info.map((row) => (

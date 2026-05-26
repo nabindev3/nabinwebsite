@@ -1,3 +1,5 @@
+'use client';
+
 import { useEffect, useRef } from 'react';
 import { PROFILE_PHOTO_B64 } from '../data/images.js';
 

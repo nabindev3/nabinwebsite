@@ -1,13 +1,13 @@
 // Centralised portfolio content. Edit values here — components consume from this module.
 
 export const NAV_LINKS = [
-  { href: '#about',      label: 'About' },
-  { href: '#skills',     label: 'Skills' },
-  { href: '#experience', label: 'Experience' },
-  { href: '#projects',   label: 'Projects' },
-  { href: '#research',   label: 'Research' },
-  { href: '#education',  label: 'Education' },
-  { href: '#photos',     label: 'Photos' }
+  { href: '/about',      label: 'About' },
+  { href: '/skills',     label: 'Skills' },
+  { href: '/experience', label: 'Experience' },
+  { href: '/projects',   label: 'Projects' },
+  { href: '/research',   label: 'Research' },
+  { href: '/education',  label: 'Education' },
+  { href: '/photos',     label: 'Photos' }
 ];
 
 export const HERO = {

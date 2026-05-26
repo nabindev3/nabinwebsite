@@ -1,3 +1,5 @@
+'use client';
+
 import { useEffect, useRef, useState } from 'react';
 import { PHOTOS } from '../data/content.js';
 import {

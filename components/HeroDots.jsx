@@ -1,3 +1,5 @@
+'use client';
+
 import { useEffect, useRef } from 'react';
 
 // Mouse-reactive constellation. Pauses when hero is off-screen.
