@@ -1,0 +1,8 @@
+# Tell GitHub Linguist to exclude the pre-migration single-file site
+# from language statistics. The current site lives under app/, components/,
+# data/, hooks/, etc. — JS-first.
+legacy/** linguist-vendored
+
+# Mark large auto-generated base64 image bundles as generated so they
+# don't inflate "JavaScript" stats either.
+data/images.js linguist-generated=true
