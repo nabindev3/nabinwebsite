@@ -34,6 +34,7 @@ const ID_TO_ROUTE = Object.fromEntries(
 let isProgrammaticScroll = false;
 let programmaticScrollTimeout = null;
 let originalReplace = null;
+let urlSyncTimeout = null;
 
 function scrollToId(id, smooth = true) {
   if (!id) return;
@@ -68,17 +69,18 @@ export default function FullPage() {
   const didInitialJump = useRef(false);
   useReveal();
 
-  // Initialize pristine, unpatched replaceState via a temporary hidden iframe.
+  // Initialize pristine, unpatched replaceState via a hidden iframe.
   // Next.js patches history.replaceState, and intercepting it causes route transitions
   // which disrupt active smooth-scrolls. Using the native method completely resolves this.
+  // We keep the iframe mounted while the page is alive to prevent scripting context destruction.
   useEffect(() => {
     try {
       const iframe = document.createElement('iframe');
       iframe.style.display = 'none';
+      iframe.id = 'native-history-iframe';
       document.body.appendChild(iframe);
       const nativeReplace = iframe.contentWindow.history.replaceState;
       originalReplace = nativeReplace.bind(window.history);
-      document.body.removeChild(iframe);
     } catch (e) {
       originalReplace = window.history.replaceState.bind(window.history);
     }
@@ -170,14 +172,26 @@ export default function FullPage() {
       const route = ID_TO_ROUTE[bestId];
       if (route && route !== activeRoute) {
         activeRoute = route;
+        // 1. Update active route highlight instantly (lightweight, no frame drops)
         window.dispatchEvent(new CustomEvent('np:routechange', { detail: route }));
-        if (window.location.pathname !== route) {
-          if (originalReplace) {
-            originalReplace(null, '', route);
-          } else {
-            router.replace(route, { scroll: false });
-          }
+        
+        // 2. Debounce history URL update until scroll settling (prevents frame drops during scroll)
+        if (urlSyncTimeout) {
+          clearTimeout(urlSyncTimeout);
         }
+        urlSyncTimeout = setTimeout(() => {
+          if (window.location.pathname !== route) {
+            if (originalReplace) {
+              try {
+                originalReplace(null, '', route);
+              } catch (e) {
+                router.replace(route, { scroll: false });
+              }
+            } else {
+              router.replace(route, { scroll: false });
+            }
+          }
+        }, 150);
       }
     }
     function onScroll() { if (!raf) raf = requestAnimationFrame(update); }
@@ -187,8 +201,11 @@ export default function FullPage() {
       window.removeEventListener('scroll', onScroll);
       window.removeEventListener('resize', recalculateMetrics);
       window.removeEventListener('load', recalculateMetrics);
+      const iframe = document.getElementById('native-history-iframe');
+      if (iframe) iframe.remove();
       clearTimeout(t1);
       clearTimeout(t2);
+      if (urlSyncTimeout) clearTimeout(urlSyncTimeout);
       if (raf) cancelAnimationFrame(raf);
     };
   }, [router]);
