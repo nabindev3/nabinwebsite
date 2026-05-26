@@ -9,7 +9,7 @@ export default function Skills() {
         What I Bring<br /><span style={{ color: 'var(--tertiary)' }}>to the Table</span>
       </h2>
       <p className="t-body-lg reveal" style={{ color: 'var(--on-surface-var)', maxWidth: 520, marginBottom: '4rem', transitionDelay: '.1s' }}>
-        Full-stack technical capability with real operational depth.
+        Advanced mechanistic interpretability research, time-series foundation modeling, and production-grade MLOps pipelines.
       </p>
 
       <div className="skills-outer">

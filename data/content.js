@@ -56,37 +56,37 @@ export const ABOUT = {
 
 export const SKILL_CATEGORIES = [
   {
-    title: 'Languages & Core',
+    title: 'Mathematical & Numeric Foundations',
     items: [
-      { name: 'Python',      w: 0.93 },
-      { name: 'SQL',         w: 0.85 },
-      { name: 'Bash / Linux', w: 0.72 }
+      { name: 'Scientific Computing & Clean Python', w: 0.93 },
+      { name: 'Statistical Modeling & Numerical Optimization', w: 0.85 },
+      { name: 'Unix / Linux Systems Engineering', w: 0.72 }
     ]
   },
   {
-    title: 'ML / AI Frameworks',
+    title: 'Deep Learning & Interpretability Systems',
     items: [
-      { name: 'TensorFlow / Keras', w: 0.88 },
-      { name: 'PyTorch',            w: 0.84 },
-      { name: 'Scikit-Learn',       w: 0.91 },
-      { name: 'Pandas / NumPy',     w: 0.92 }
+      { name: 'Mechanistic Interpretability (SAEs, Patching)', w: 0.88 },
+      { name: 'Deep Learning & Representation Probing', w: 0.84 },
+      { name: 'Time-Series Foundation Models (TSFMs)', w: 0.91 },
+      { name: 'Mathematical Seismics & Regression', w: 0.92 }
     ]
   },
   {
-    title: 'DevOps & Tooling',
+    title: 'MLOps & Scale Infrastructure',
     items: [
-      { name: 'Git / GitHub',   w: 0.88 },
-      { name: 'Docker',         w: 0.68 },
-      { name: 'FastAPI',        w: 0.82 },
-      { name: 'MLflow / CI/CD', w: 0.78 }
+      { name: 'Distributed Inference & Routing Cascades', w: 0.88 },
+      { name: 'FAISS Semantic Vector Search & Cache', w: 0.68 },
+      { name: 'FastAPI Systems & CI/CD Pipelines', w: 0.82 },
+      { name: 'MLflow & Automated Metric-Floor CI/CD', w: 0.78 }
     ]
   },
   {
-    title: 'Domain & Leadership',
+    title: 'Operations Systems & Decision Science',
     items: [
-      { name: 'Stakeholder Communication', w: 0.95 },
-      { name: 'Team Leadership',            w: 0.89 },
-      { name: 'Policy Research & Analysis', w: 0.82 }
+      { name: 'High-Stakes Operational Risk Auditing', w: 0.95 },
+      { name: 'Data Modernization & Capacity Optimization', w: 0.89 },
+      { name: 'Technical-to-Executive Policy Analysis', w: 0.82 }
     ]
   }
 ];
