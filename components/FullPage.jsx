@@ -1,7 +1,6 @@
 'use client';
 
 import { useEffect, useRef } from 'react';
-import { usePathname } from 'next/navigation';
 import Hero from './Hero.jsx';
 import Marquee from './Marquee.jsx';
 import About from './About.jsx';
@@ -44,21 +43,35 @@ function scrollToId(id, smooth = true) {
 }
 
 export default function FullPage() {
-  const pathname = usePathname();
   const didInitialJump = useRef(false);
   useReveal();
 
   // Initial load: jump (no animation) to the deep-linked section.
-  // Subsequent route changes from clicks: smooth-scroll.
   useEffect(() => {
-    const id = ROUTE_TO_ID[pathname];
-    if (!id) return;
-    const raf = requestAnimationFrame(() => {
-      scrollToId(id, didInitialJump.current);
+    if (didInitialJump.current) return;
+    const id = ROUTE_TO_ID[window.location.pathname];
+    if (id) {
+      const raf = requestAnimationFrame(() => {
+        scrollToId(id, false);
+        didInitialJump.current = true;
+      });
+      return () => cancelAnimationFrame(raf);
+    } else {
       didInitialJump.current = true;
-    });
-    return () => cancelAnimationFrame(raf);
-  }, [pathname]);
+    }
+  }, []);
+
+  // Handle browser Back/Forward navigation (popstate)
+  useEffect(() => {
+    const handlePopState = () => {
+      const id = ROUTE_TO_ID[window.location.pathname];
+      if (id) {
+        scrollToId(id, true);
+      }
+    };
+    window.addEventListener('popstate', handlePopState);
+    return () => window.removeEventListener('popstate', handlePopState);
+  }, []);
 
   // Explicit scroll requests from the navbar (works even when the user clicks
   // the link for the route they're already on — usePathname wouldn't re-fire).
