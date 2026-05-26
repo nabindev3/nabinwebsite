@@ -1,7 +1,4 @@
-import Projects from '../../components/Projects.jsx';
-
+// Route stub — content is rendered once by <FullPage> in app/layout.jsx.
+// Keeping the file so Next still treats /projects/ as a real route.
 export const metadata = { title: 'Projects' };
-
-export default function ProjectsPage() {
-  return <Projects />;
-}
+export default function Page() { return null; }

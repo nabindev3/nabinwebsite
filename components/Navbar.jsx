@@ -9,6 +9,9 @@ export default function Navbar() {
   const [compact, setCompact] = useState(false);
   const [open, setOpen] = useState(false);
   const pathname = usePathname();
+  // Active route tracked separately so scroll-driven URL changes
+  // (history.replaceState in FullPage) keep the nav highlight in sync
+  const [activeRoute, setActiveRoute] = useState(pathname);
 
   useEffect(() => {
     const onScroll = () => setCompact(window.scrollY > 60);
@@ -16,12 +19,22 @@ export default function Navbar() {
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
-  // Close mobile menu on route change
-  useEffect(() => { setOpen(false); }, [pathname]);
+  // Real Next route changes (clicks)
+  useEffect(() => {
+    setActiveRoute(pathname);
+    setOpen(false);
+  }, [pathname]);
+
+  // Scroll-driven URL changes from FullPage
+  useEffect(() => {
+    const onRouteSync = (e) => setActiveRoute(e.detail);
+    window.addEventListener('np:routechange', onRouteSync);
+    return () => window.removeEventListener('np:routechange', onRouteSync);
+  }, []);
 
   const isActive = (href) => {
-    if (href === '/') return pathname === '/';
-    return pathname === href || pathname.startsWith(href + '/');
+    if (href === '/') return activeRoute === '/';
+    return activeRoute === href || activeRoute.startsWith(href + '/');
   };
 
   return (
