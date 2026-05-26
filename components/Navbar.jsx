@@ -32,6 +32,11 @@ export default function Navbar() {
     return () => window.removeEventListener('np:routechange', onRouteSync);
   }, []);
 
+  const handleLinkClick = (href) => {
+    window.dispatchEvent(new CustomEvent('np:scroll-to', { detail: href }));
+    setOpen(false);
+  };
+
   const isActive = (href) => {
     if (href === '/') return activeRoute === '/';
     return activeRoute === href || activeRoute.startsWith(href + '/');
@@ -40,16 +45,38 @@ export default function Navbar() {
   return (
     <>
       <nav id="navbar" className={`site-nav${compact ? ' compact' : ''}`}>
-        <Link href="/" className="nav-logo" aria-label="Nabin Prasad Dev — Home">
+        <Link
+          href="/"
+          scroll={false}
+          onClick={() => handleLinkClick('/')}
+          className="nav-logo"
+          aria-label="Nabin Prasad Dev — Home"
+        >
           <img className="nav-logo-mark" src="/favicon-32.png?v=4" alt="" width="32" height="32" />
         </Link>
         <ul className="nav-links">
           {NAV_LINKS.map((l) => (
             <li key={l.href}>
-              <Link href={l.href} className={isActive(l.href) ? 'active' : ''}>{l.label}</Link>
+              <Link
+                href={l.href}
+                scroll={false}
+                onClick={() => handleLinkClick(l.href)}
+                className={isActive(l.href) ? 'active' : ''}
+              >
+                {l.label}
+              </Link>
             </li>
           ))}
-          <li><Link href="/contact" className={`nav-cta${isActive('/contact') ? ' active' : ''}`}>Let&apos;s Chat</Link></li>
+          <li>
+            <Link
+              href="/contact"
+              scroll={false}
+              onClick={() => handleLinkClick('/contact')}
+              className={`nav-cta${isActive('/contact') ? ' active' : ''}`}
+            >
+              Let&apos;s Chat
+            </Link>
+          </li>
         </ul>
         <button
           className={`hamburger${open ? ' open' : ''}`}
@@ -62,9 +89,22 @@ export default function Navbar() {
 
       <div className={`mob-menu${open ? ' open' : ''}`} id="mob-menu">
         {NAV_LINKS.map((l) => (
-          <Link key={l.href} href={l.href}>{l.label}</Link>
+          <Link
+            key={l.href}
+            href={l.href}
+            scroll={false}
+            onClick={() => handleLinkClick(l.href)}
+          >
+            {l.label}
+          </Link>
         ))}
-        <Link href="/contact">Contact</Link>
+        <Link
+          href="/contact"
+          scroll={false}
+          onClick={() => handleLinkClick('/contact')}
+        >
+          Contact
+        </Link>
       </div>
     </>
   );
