@@ -106,7 +106,7 @@ npx serve out        # Host and preview the local production static export
 *   🔬 **TSFM Routing Probe** — *Label-Free Difficulty Signals & Recalibrated Selective Forecasting for Chronos-T5*  
     *Repo:* [SAE-framework-or-time-series-analysis](https://github.com/nabindev3/SAE-framework-or-time-series-analysis)
 *   🧠 **LLM Routing Probe** — *Label-Free Difficulty Signals & Recalibrated Selective QA for Pythia*  
-    *Repo:* [LLM-Routing-Probe](https://github.com/nabindev3)
+    *Repo:* [llm-sae-difficulty](https://github.com/nabindev3/llm-sae-difficulty)
 *   🔀 **Cascade Engine** — *Multi-Tier LLM Inference Router with 60% Cost Reductions*  
     *Repo:* [Cascade-Engine](https://github.com/nabindev3/Cascade-Engine)
 *   🏨 **Hotel Revenue ML Platform** — *Production-Grade forecasting & XGBoost cancellation engine*  
