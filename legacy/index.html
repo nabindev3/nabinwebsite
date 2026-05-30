@@ -2199,26 +2199,28 @@
           <div class="arch-block" style="background:rgba(180,196,255,0.04);border-color:rgba(180,196,255,.18);">
             <div class="arch-title">The Problem</div>
             <div class="arch-body">
-              Serving generative AI in production is incredibly expensive — frontier models like GPT-4o cost nearly <strong>100× more per token</strong> than small or local models. But blindly routing all traffic to a cheap model destroys quality. Deciding <em>which</em> queries actually need premium reasoning is a hard routing problem.
+              Serving generative AI in production is incredibly expensive — frontier models like GPT-4o cost nearly <strong>100× more per token</strong> than small or local models. But blindly routing all traffic to a cheap model destroys quality. Deciding which queries actually need premium reasoning is a hard routing problem, and in production, it's a moving target: cloud-model latency and reliability drift hour-by-hour with load, deprecations, and silent re-snapshots.
             </div>
           </div>
           <div class="arch-block">
             <div class="arch-title">The Stack</div>
             <div class="arch-body">
-              <strong>Routing:</strong> Frugal cascade logic · Contextual Discounted Thompson Sampling (CD-TS)<br>
+              <strong>Routing:</strong> Frugal cascade logic · Contextual Discounted Thompson Sampling (CD-TS) · Adaptive CD-TS · V<sub>T</sub>-free drift tracking via two-sided CUSUM change-detection · Linear Thompson Sampling (LinTS) contextual bandit over prompt features/embeddings<br>
               <strong>Intelligent Layers:</strong> Microsoft Presidio (PII) · FAISS (semantic cache) · DistilBERT + VADER (gatekeeper)<br>
               <strong>Engines:</strong> Ollama — local llama3.2:3b · OpenAI — gpt-4o-mini / gpt-4o<br>
-              <strong>Ops:</strong> pytest · GitHub Actions CI/CD · LaTeX manuscript
+              <strong>Gateway:</strong> TypeScript + Express API gateway (API-key auth · rate limiting · batch · core failover)<br>
+              <strong>Ops:</strong> pytest · vitest + supertest · GitHub Actions CI/CD (Python core and TS gateway) · LaTeX manuscript
             </div>
           </div>
           <div class="arch-block">
             <div class="arch-title">The Solution</div>
             <div class="arch-body">
-              A deterministic + learned routing framework that triages every query through an intelligent pipeline before any expensive API call. <strong>PrivacyFilter</strong> (Presidio) redacts PII before it leaves the local network; <strong>SemanticCache</strong> (FAISS) returns highly-rated past answers via vector similarity, bypassing inference entirely; <strong>Gatekeeper</strong> (DistilBERT + VADER) scores syntactic complexity and intent to preemptively assign the cheapest capable tier; then <strong>Multi-Tier Routing</strong> dispatches to Tier 1 (local llama3.2:3b), Tier 2 (gpt-4o-mini), or Tier 3 (gpt-4o) only when warranted.
+              A deterministic + learned routing framework that triages every query through an intelligent pipeline before any expensive API call. <strong>PrivacyFilter</strong> (Presidio) redacts PII before it leaves the local network; <strong>SemanticCache</strong> (FAISS) returns highly-rated past answers via vector similarity, bypassing inference entirely; <strong>Gatekeeper</strong> (DistilBERT + VADER) scores syntactic complexity and intent to preemptively assign the cheapest capable tier; then <strong>Multi-Tier Routing</strong> dispatches to Tier 1 (local llama3.2:3b), Tier 2 (gpt-4o-mini), or Tier 3 (gpt-4o) only when warranted.<br><br>
+              The learned router doesn't just split traffic, it adapts online as engine reliability drifts: <strong>CD-TS</strong> discounts stale evidence under a known variation budget, and <strong>Adaptive CD-TS</strong> detects abrupt breaks (outages, deprecations) via two-sided CUSUM and restarts the affected arm with no prior knowledge of the drift rate. A hardened <strong>TypeScript gateway</strong> fronts the Python core with auth, rate-limiting, and transparent failover.
             </div>
           </div>
           <div class="project-stack">
-            <span class="pill">Python</span><span class="pill">PyTorch</span><span class="pill">DistilBERT</span><span class="pill">FAISS</span><span class="pill">Presidio</span><span class="pill">Ollama</span><span class="pill">OpenAI</span><span class="pill">VADER</span><span class="pill">pytest</span><span class="pill">GitHub Actions</span><span class="pill">LaTeX</span>
+            <span class="pill">Python</span><span class="pill">PyTorch</span><span class="pill">DistilBERT</span><span class="pill">FAISS</span><span class="pill">Presidio</span><span class="pill">Ollama</span><span class="pill">OpenAI</span><span class="pill">VADER</span><span class="pill">TypeScript</span><span class="pill">Express</span><span class="pill">pytest</span><span class="pill">vitest</span><span class="pill">GitHub Actions</span><span class="pill">LaTeX</span>
           </div>
           <div class="project-links">
             <a href="https://github.com/nabindev3/Cascade-Engine" target="_blank" rel="noopener" class="proj-link primary">View on GitHub →</a>
@@ -2247,14 +2249,14 @@
             </div>
             <div class="kpi-cell">
               <div class="kpi-num">CD-TS</div>
-              <div class="kpi-label">Learned Router</div>
+              <div class="kpi-label">No-Regret Learned Router</div>
             </div>
           </div>
           <div class="project-result">
-            Full evaluation pipeline on <strong style="color:var(--on-surface);">Alpaca-Eval</strong> generating statistically rigorous <strong style="color:var(--on-surface);">Pareto frontiers</strong> (Cost vs. Quality), benchmarked against RouteLLM. Formalized into a LaTeX academic manuscript with CI/CD — prepared for submission to top-tier ML/Systems venues (e.g. <strong style="color:var(--on-surface);">MLSys</strong>).
+            Full evaluation pipeline on <strong style="color:var(--on-surface);">Alpaca-Eval</strong> generating statistically rigorous <strong style="color:var(--on-surface);">Pareto frontiers</strong> (Cost vs. Quality), benchmarked against <strong style="color:var(--on-surface);">RouteLLM</strong> and <strong style="color:var(--on-surface);">FrugalGPT</strong>.<br><br>The learned core is provably no-regret under non-stationary drift: <strong>CD-TS</strong> attains a sublinear pseudo-regret rate that matches the Besbes–Gur–Zeevi lower bound up to log factors, with a measured cross-horizon regret exponent of <strong>0.20–0.55</strong> versus a frozen offline-optimal baseline that degrades <strong>25–33×</strong> under drift. The <strong>Adaptive CD-TS</strong> variant matches or beats the oracle-tuned discount without ever observing the drift budget V<sub>T</sub>, and <strong>LinTS</strong> generalizes routing decisions across semantically similar prompts rather than fixed complexity bins. All formalized into a <strong>LaTeX academic manuscript</strong> with dual-language CI prepared for submission to top-tier ML/Systems venues (e.g. <strong style="color:var(--on-surface);">MLSys</strong>).
           </div>
           <p style="font-size:.78rem;color:var(--outline);line-height:1.65;font-style:italic;">
-            Not an LLM wrapper — the infrastructure that makes LLMs cheap enough for enterprises to actually deploy.
+            Not an LLM wrapper — the infrastructure that makes LLMs cheap enough, and reliable enough under real-world drift, for enterprises to actually deploy.
           </p>
         </div>
       </div>
