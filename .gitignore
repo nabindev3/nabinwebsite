@@ -15,3 +15,7 @@ out/
 # Editor
 .vscode/
 .idea/
+scratch_analysis/
+
+# Local working clones of related research repos
+scratch_analysis/
