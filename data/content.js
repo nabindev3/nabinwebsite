@@ -103,16 +103,16 @@ export const WORKFLOW = [
 export const EXPERIENCE = {
   tech: [
     {
-      date: 'Jun 2021 – Sep 2021',
-      loc:  'Lalitpur, Nepal',
-      role: 'Assistant Research Fellow',
-      company: 'Nepal Academy of Science & Technology (NAST)',
+      date: 'Oct 2022 – May 2023',
+      loc:  'Toronto, ON · On-site',
+      role: 'Operations Engineer',
+      company: 'DHL',
       bullets: [
-        'Designed ML/GAN models for Earthquake Early Warning Systems — directly informing national safety infrastructure policy',
-        'Authored technical reports adapted for non-technical government stakeholders, bridging research and actionable policy',
-        'Collaborated with senior scientists to validate model outputs against seismic datasets'
+        'Conducted time studies on core warehouse tasks (picking, packing, sorting) and converted the data into engineered labor standards, setting realistic productivity targets for floor staff',
+        'Compiled and analyzed operational KPIs to identify bottlenecks and forecast future staffing needs',
+        'Led cross-functional continuous-improvement projects using <strong>Lean / Six Sigma</strong> methods and Gemba floor walks to reduce waste and strengthen safety protocols'
       ],
-      tags: ['Public Safety', 'ML Research', 'GAN Models', 'Policy Reporting']
+      tags: ['Industrial Engineering', 'Lean / Six Sigma', 'KPI Analysis', 'Time Studies']
     },
     {
       date: 'Oct 2021 – Aug 2022',
@@ -126,6 +126,18 @@ export const EXPERIENCE = {
         'Designed automated reporting dashboards used by executive leadership for investment decisions'
       ],
       tags: ['Python', 'SQL', 'Data Engineering', 'Legacy Modernization']
+    },
+    {
+      date: 'Jun 2021 – Sep 2021',
+      loc:  'Lalitpur, Nepal',
+      role: 'Assistant Research Fellow',
+      company: 'Nepal Academy of Science & Technology (NAST)',
+      bullets: [
+        'Designed ML/GAN models for Earthquake Early Warning Systems — directly informing national safety infrastructure policy',
+        'Authored technical reports adapted for non-technical government stakeholders, bridging research and actionable policy',
+        'Collaborated with senior scientists to validate model outputs against seismic datasets'
+      ],
+      tags: ['Public Safety', 'ML Research', 'GAN Models', 'Policy Reporting']
     }
   ],
   ops: [
