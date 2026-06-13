@@ -152,7 +152,11 @@ export const EXPERIENCE = {
         'Maintained 100% audit compliance across all financial reconciliations in a nightly reporting environment',
         'Applied systems thinking to optimize cross-departmental coordination between executive leadership and front-line staff'
       ],
-      tags: ['Operational Leadership', 'Audit Compliance', 'Stakeholder Management']
+      tags: ['Operational Leadership', 'Audit Compliance', 'Stakeholder Management'],
+      reference: {
+        href: '/reference-nobu-hotel.pdf',
+        label: 'View reference letter — Director of Rooms (PDF)'
+      }
     }
   ]
 };
@@ -218,7 +222,8 @@ export const FEATURED_PROJECTS = [
     pills: ['Python 3.11', 'FastAPI', 'XGBoost', 'NeuralForecast (N-BEATS)', 'Prophet', 'SHAP', 'PuLP', 'Streamlit', 'MLflow', 'Docker', 'GitHub Actions', 'HuggingFace'],
     links: [
       { href: 'https://github.com/nabindev3/Smart-Hotel-Analytics-', label: 'View on GitHub →', primary: true },
-      { href: 'https://smart-hotel-analytics-platform-6ziv.onrender.com/', label: 'Live Demo ↗' }
+      { href: 'https://smart-hotel-analytics-platform-6ziv.onrender.com/', label: 'Live Demo ↗' },
+      { href: '/reference-nobu-hotel.pdf', label: 'Domain reference: Nobu Hotel (PDF) ↗' }
     ],
     impactLabel: 'Measurable Outcomes',
     kpis: [
