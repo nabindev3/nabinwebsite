@@ -216,10 +216,10 @@ export const FEATURED_PROJECTS = [
     year: '2025 / 2026',
     title: 'Hotel Revenue ML Platform',
     hook: '"7 years working in hotels showed me exactly what data was being wasted."',
-    problem: `Hotel management relies heavily on static, backward-looking reports. Critical revenue decisions — like overbooking limits and dynamic pricing — are often made via intuition rather than predictive data, resulting in lost revenue and operational inefficiencies.`,
-    stack: `<strong>Backend:</strong> FastAPI · Python 3.11 · GZip + CORS middleware<br><strong>ML Models:</strong> XGBoost (classification) · N-BEATS &amp; Prophet (time-series forecasting) · KNN (recommender) · SHAP (explainability)<br><strong>NLP:</strong> 3-tier sentiment pipeline — HuggingFace Inference API / Anthropic Claude / TextBlob<br><strong>Ops & UI:</strong> Docker Compose · Streamlit · MLflow · GitHub Actions CI/CD (with automated metric-floor tests)`,
-    solution: `A production-grade MLOps system featuring robust FastAPI endpoints. The core forecasting engine pits <strong>Prophet</strong> against a deep-learning <strong>N-BEATS</strong> baseline to predict ADR, Occupancy, and Revenue.<br><br>A rigorously evaluated <strong>XGBoost</strong> cancellation classifier drives an LP-based overbooking optimizer and a dynamic pricing engine. To ensure production viability, the model is evaluated exclusively on a temporal holdout set using <strong>walk-forward TimeSeriesSplit</strong>, and notorious target-leakage features (like <code>booking_changes</code>) from the public dataset were strictly removed.<br><br>The entire platform is containerized via Docker and heavily monitored with MLflow and nightly CI/CD API health checks. Built entirely from operational domain expertise earned at <strong>Nobu Hotel Toronto</strong> and <strong>Marriott</strong>.`,
-    pills: ['Python 3.11', 'FastAPI', 'XGBoost', 'NeuralForecast (N-BEATS)', 'Prophet', 'SHAP', 'PuLP', 'Streamlit', 'MLflow', 'Docker', 'GitHub Actions', 'HuggingFace'],
+    problem: `Hotel management still runs on static, backward-looking reports. Revenue-critical calls — like overbooking limits and dynamic pricing — get made on intuition instead of prediction, which quietly leaks revenue and creates operational drag.`,
+    stack: `<strong>Backend:</strong> FastAPI · Python 3.11 · GZip + CORS middleware<br><strong>ML:</strong> XGBoost (calibrated cancellation classifier) · Prophet &amp; N-BEATS (time-series forecasting) · Truncated SVD (recommender) · SHAP (explainability)<br><strong>NLP:</strong> 3-tier sentiment pipeline — HuggingFace Inference API, then Anthropic Claude, then TextBlob fallback<br><strong>Ops & UI:</strong> Docker Compose · Streamlit · MLflow · GitHub Actions CI/CD — automated metric-floor gates, nightly drift, daily health checks`,
+    solution: `A production-minded MLOps system behind clean FastAPI endpoints. The forecasting engine runs a <strong>Prophet vs N-BEATS</strong> bake-off on occupancy, and uses <strong>Prophet</strong> for ADR and revenue.<br><br>A calibrated <strong>XGBoost</strong> cancellation classifier drives a risk-constrained overbooking optimizer and a dynamic pricing engine. The overbooking step is a closed-form 1-D search — an earlier version expressed it as a PuLP linear program, removed once it was clear the problem reduces to a simple argmax. The classifier is evaluated on a strict temporal hold-out (the most recent ~17% of bookings, no shuffling) after stripping the dataset's notorious target-leakage features (<code>booking_changes</code>, <code>days_in_waiting_list</code>, <code>reservation_status</code>), so the headline AUC reflects what is actually knowable at booking time.<br><br>The whole platform is containerized with Docker Compose and monitored with MLflow, nightly model-drift checks, and daily API health checks. Built on operational domain expertise earned at <strong>Nobu Hotel Toronto</strong> and <strong>Marriott</strong>.`,
+    pills: ['Python 3.11', 'FastAPI', 'XGBoost', 'NeuralForecast (N-BEATS)', 'Prophet', 'SHAP', 'scikit-learn (Truncated SVD)', 'Streamlit', 'MLflow', 'Docker', 'GitHub Actions', 'HuggingFace'],
     links: [
       { href: 'https://github.com/nabindev3/Smart-Hotel-Analytics-', label: 'View on GitHub →', primary: true },
       { href: 'https://smart-hotel-analytics-platform-6ziv.onrender.com/', label: 'Live Demo ↗' },
@@ -227,13 +227,14 @@ export const FEATURED_PROJECTS = [
     ],
     impactLabel: 'Measurable Outcomes',
     kpis: [
-      { num: '81.4%', label: 'Honest AUC — leak-free, temporal walk-forward evaluation' },
-      { num: '15.0%', label: 'Occupancy MAPE' },
+      { num: '81.4%', label: 'Honest AUC — leak-free, temporal hold-out' },
+      { num: '0.163', label: 'Calibrated Brier Score' },
+      { num: '15.0%', label: 'Occupancy Forecast MAPE' },
       { num: '7.4%',  label: 'ADR Forecast MAPE' },
-      { num: '18%',   label: 'Scheduling Savings (projected)' },
-      { num: '3×',    label: 'Faster Reporting' }
+      { num: '18.8%', label: 'Revenue Forecast MAPE' },
+      { num: '~67%',  label: 'Real data in training blend' }
     ],
-    result: `<strong>179,390</strong> booking records ingested · Calibrated Brier Score <strong>0.163</strong> · Data quality grade <strong>B</strong> — models trained on real, messy operational data (not a clean toy set).`,
+    result: `Cancellation model trained on a <strong>real-majority blend</strong> — 119,390 real bookings (Antonio, Almeida &amp; Nunes hotel-demand dataset) + 60,000 synthetic = <strong>179,390 records</strong>, data-quality grade <strong>B</strong>. The synthetic share carries deliberate real-world mess (missing values, outliers, post-COVID drift), so the cleaning and validation code earns its keep. <strong>18%</strong> projected scheduling savings · <strong>3×</strong> faster reporting (illustrative).`,
     tagline: `Hospitality domain expertise + ML engineering = solving problems most AI engineers don't even know to ask about.`
   }
 ];
