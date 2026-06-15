@@ -20,9 +20,12 @@
   --font-head:          'Space Grotesk', sans-serif;
   --font-body:          'Inter', sans-serif;
   --transition:         0.25s cubic-bezier(0.4,0,0.2,1);
-  --gutter:             2rem;
-  --section-pad:        10rem;
-  --maxw:               1280px;
+  /* Side padding scales with the viewport: roomy on large screens, tight on
+     phones — so content fills the space with intentional margins, never a
+     narrow column stranded between big empty gaps. */
+  --gutter:             clamp(1.5rem, 3.5vw, 3.5rem);
+  --section-pad:        6.5rem;
+  --maxw:               1600px;
   /* Easing — exponential ease-outs for snappy, weighty motion (no bounce). */
   --ease-out-expo:      cubic-bezier(0.16, 1, 0.3, 1);
   --ease-out-quint:     cubic-bezier(0.22, 1, 0.36, 1);
@@ -1299,7 +1302,7 @@ footer {
 
 /* Responsive */
 @media (max-width: 1024px) {
-  :root { --section-pad: 7rem; }
+  :root { --section-pad: 5.5rem; }
   #hero { flex-direction: column; text-align: center; gap: 2rem; padding: 6rem 5% 4rem; }
   .hero-text { max-width: 100%; align-items: center; text-align: center; }
   .hero-desc { text-align: center; }
@@ -1316,7 +1319,7 @@ footer {
   .kpi-row { grid-template-columns: repeat(3, 1fr); }
 }
 @media (max-width: 768px) {
-  :root { --section-pad: 5rem; --gutter: 1.25rem; }
+  :root { --section-pad: 4.5rem; --gutter: 1.25rem; }
   .nav-links { display: none; }
   .nav-cta { display: none; }
   .hamburger { display: flex; }
