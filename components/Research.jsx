@@ -11,9 +11,9 @@ export default function Research() {
         Applying technical knowledge to real-world policy questions and exploring the intersection of AI with human experience.
       </p>
 
-      <div className="research-grid reveal" style={{ transitionDelay: '.2s' }}>
-        {RESEARCH.map((r) => (
-          <div className="research-card" key={r.title}>
+      <div className="research-grid">
+        {RESEARCH.map((r, i) => (
+          <div className="research-card reveal" key={r.title} style={{ transitionDelay: `${0.1 + i * 0.08}s` }}>
             <div className="research-type">{r.type}</div>
             <div className="research-title">{r.title}</div>
             <p className="research-abstract">{r.abstract}</p>

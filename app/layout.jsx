@@ -1,6 +1,7 @@
 import { Space_Grotesk, Inter } from 'next/font/google';
 import './globals.css';
 import Cursor from '../components/Cursor.jsx';
+import ScrollProgress from '../components/ScrollProgress.jsx';
 import Navbar from '../components/Navbar.jsx';
 import Footer from '../components/Footer.jsx';
 import BackToTop from '../components/BackToTop.jsx';
@@ -164,6 +165,7 @@ export default function RootLayout({ children }) {
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
         <Cursor />
+        <ScrollProgress />
         <Navbar />
         {/* Per-route page.jsx is now an empty stub used only for metadata.
             FullPage renders every section once and stays mounted across routes

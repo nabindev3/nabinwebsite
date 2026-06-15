@@ -22,6 +22,12 @@
   --transition:         0.25s cubic-bezier(0.4,0,0.2,1);
   --gutter:             2rem;
   --section-pad:        10rem;
+  --maxw:               1280px;
+  /* Easing — exponential ease-outs for snappy, weighty motion (no bounce). */
+  --ease-out-expo:      cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-out-quint:     cubic-bezier(0.22, 1, 0.36, 1);
+  /* Tinted shadow tuned to the cool tertiary so elevation matches the palette. */
+  --shadow-lift:        0 18px 40px -20px rgba(68, 112, 255, 0.45), 0 6px 14px -8px rgba(0, 0, 0, 0.6);
 }
 
 *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
@@ -52,27 +58,29 @@ body::after {
   opacity: 0.4;
 }
 
-/* Cursor */
+/* Cursor — position + scale driven entirely by transform in Cursor.jsx
+   (translate3d for the lerped follow, scale for hover/press). Sizing via
+   transform instead of width/height keeps it off the layout path and buttery. */
 #cur-dot {
-  width: 4px; height: 4px;
+  width: 8px; height: 8px;
   background: var(--tertiary);
-  position: fixed;
+  position: fixed; left: 0; top: 0;
   pointer-events: none;
   z-index: 10000;
-  transform: translate(-50%,-50%);
-  transition: width .1s, height .1s;
+  transform: translate3d(-50%,-50%,0) scale(0.5);
+  will-change: transform;
 }
 #cur-ring {
-  width: 24px; height: 24px;
+  width: 48px; height: 48px;
   border: 1px solid rgba(180,196,255,.5);
-  position: fixed;
+  position: fixed; left: 0; top: 0;
   pointer-events: none;
   z-index: 9999;
-  transform: translate(-50%,-50%);
-  transition: width .18s, height .18s, opacity .18s;
+  opacity: 0.7;
+  transform: translate3d(-50%,-50%,0) scale(0.5);
+  transition: opacity .25s ease;
+  will-change: transform;
 }
-body:has(a:hover) #cur-ring,
-body:has(button:hover) #cur-ring { width: 40px; height: 40px; opacity: 1; }
 
 /* Typography */
 .t-display      { font-family: var(--font-head); font-size: clamp(3.5rem, 8vw, 7.5rem); font-weight: 700; line-height: 1; letter-spacing: -0.05em; }
@@ -86,9 +94,12 @@ body:has(button:hover) #cur-ring { width: 40px; height: 40px; opacity: 1; }
 .reveal {
   opacity: 0;
   transform: translateY(32px);
-  transition: opacity .7s ease, transform .7s ease;
+  transition: opacity .8s var(--ease-out-expo), transform .8s var(--ease-out-expo);
+  will-change: opacity, transform;
 }
 .reveal.in { opacity: 1; transform: translateY(0); }
+/* Drop the compositor hint once settled so long pages don't pin layers. */
+.reveal.in { will-change: auto; }
 
 /* Navigation */
 nav.site-nav {
@@ -463,6 +474,14 @@ section {
   position: relative;
   z-index: 2;
 }
+/* Content container — backgrounds stay full-bleed (on the section), but the
+   content itself is capped and centered so it doesn't sprawl edge-to-edge on
+   wide screens. The single biggest readability/minimalism win on this layout.
+   Hero is excluded; it runs its own full-width flex composition. */
+section:not(#hero) > * {
+  max-width: var(--maxw);
+  margin-inline: auto;
+}
 .section-label {
   font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
   font-size: 0.85rem;
@@ -499,6 +518,8 @@ section {
   font-size: 1.05rem;
   line-height: 1.85;
   margin-bottom: 1.2rem;
+  max-width: 68ch;       /* comfortable reading measure */
+  text-wrap: pretty;     /* fewer orphans on the last line */
 }
 .about-text p strong { color: var(--on-surface); font-weight: 500; }
 .about-blockquote {
@@ -829,7 +850,8 @@ section {
   background: var(--surface-low);
   border: 1px solid var(--outline-var);
   padding: 2rem;
-  transition: border-color var(--transition), background var(--transition);
+  transition: border-color var(--transition), background var(--transition),
+              transform .4s var(--ease-out-quint), box-shadow .4s var(--ease-out-quint);
   display: flex;
   flex-direction: column;
   gap: 1rem;
@@ -837,6 +859,8 @@ section {
 .project-card:hover {
   border-color: var(--tertiary);
   background: var(--surface-container);
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-lift);
 }
 .project-card.featured {
   grid-column: 1 / -1;
@@ -983,11 +1007,14 @@ section {
   display: flex;
   flex-direction: column;
   gap: 0.8rem;
-  transition: border-color var(--transition), background var(--transition);
+  transition: border-color var(--transition), background var(--transition),
+              transform .4s var(--ease-out-quint), box-shadow .4s var(--ease-out-quint);
 }
 .research-card:hover {
   border-color: var(--tertiary);
   background: var(--surface-container);
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-lift);
 }
 .research-type {
   font-family: 'SF Mono', monospace;
@@ -1026,12 +1053,23 @@ section {
   padding: 2rem;
   position: relative;
   overflow: hidden;
+  transition: border-color var(--transition),
+              transform .4s var(--ease-out-quint), box-shadow .4s var(--ease-out-quint);
+}
+.edu-card:hover {
+  border-color: var(--tertiary);
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-lift);
 }
 .edu-accent {
   position: absolute; left: 0; top: 0; bottom: 0;
   width: 3px;
   background: var(--tertiary);
+  transform: scaleY(0.4);
+  transform-origin: top;
+  transition: transform .45s var(--ease-out-quint);
 }
+.edu-card:hover .edu-accent { transform: scaleY(1); }
 .edu-year {
   font-family: 'SF Mono', monospace;
   font-size: 0.85rem;
@@ -1071,6 +1109,13 @@ section {
   border: 1px solid var(--outline-var);
   font-size: 0.88rem;
   color: var(--on-surface-var);
+  transition: border-color var(--transition), color var(--transition),
+              transform .3s var(--ease-out-quint);
+}
+.cert-item:hover {
+  border-color: var(--tertiary);
+  color: var(--on-surface);
+  transform: translateX(4px);
 }
 
 .lang-grid {
@@ -1084,6 +1129,13 @@ section {
   border: 1px solid var(--outline-var);
   background: var(--surface-low);
   text-align: center;
+  transition: border-color var(--transition),
+              transform .35s var(--ease-out-quint), box-shadow .35s var(--ease-out-quint);
+}
+.lang-card:hover {
+  border-color: var(--tertiary);
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-lift);
 }
 .lang-flag { font-size: 1.8rem; margin-bottom: 0.5rem; }
 .lang-name {
@@ -1304,4 +1356,84 @@ footer {
   .kpi-label { font-size: 0.55rem; }
   .project-hook { font-size: 0.88rem; }
   .project-result { font-size: 0.85rem; padding: 0.85rem 1rem; }
+}
+
+/* ═══════════════════════════════════════
+   MOTION & INTERACTION POLISH
+═══════════════════════════════════════ */
+
+/* Pressed feedback — physical "give" on click. Transform-only, GPU-cheap. */
+.btn-primary, .btn-ghost, .nav-cta, .proj-link, .contact-link,
+.gallery-nav-btn, .tab-btn, .hamburger, #btt {
+  transition: background var(--transition), color var(--transition),
+              border-color var(--transition), transform .12s var(--ease-out-quint);
+}
+.btn-primary:active, .btn-ghost:active, .nav-cta:active,
+.contact-link:active, .gallery-nav-btn:active, #btt:active {
+  transform: translateY(1px) scale(0.985);
+}
+.proj-link:active, .tab-btn:active { transform: translateY(1px); }
+
+/* Keyboard focus — visible ring for non-pointer navigation (a11y).
+   :focus-visible only, so mouse users never see it. */
+a:focus-visible, button:focus-visible, .nav-cta:focus-visible,
+.btn-primary:focus-visible, .btn-ghost:focus-visible,
+.contact-link:focus-visible, .gallery-nav-btn:focus-visible,
+.tab-btn:focus-visible, .contact-email:focus-visible {
+  outline: 2px solid var(--tertiary);
+  outline-offset: 3px;
+  border-radius: 1px;
+}
+
+/* Animated underline on the contact email — replaces the plain color swap. */
+.contact-email { position: relative; }
+.contact-email::after {
+  content: '';
+  position: absolute;
+  left: 0; bottom: -0.15em;
+  width: 100%; height: 1px;
+  background: var(--tertiary);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform .45s var(--ease-out-expo);
+}
+.contact-email:hover::after { transform: scaleX(1); }
+
+/* Stat cells lift their number on hover for a touch of depth. */
+.stat-num { transition: transform .35s var(--ease-out-quint); }
+.stat-item:hover .stat-num { transform: translateY(-2px); }
+
+/* Scroll progress — thin tertiary bar pinned under the navbar.
+   Width is set inline by ScrollProgress.jsx; transform keeps it off layout. */
+#scroll-progress {
+  position: fixed;
+  top: 0; left: 0;
+  height: 2px;
+  width: 100%;
+  transform: scaleX(0);
+  transform-origin: left;
+  background: linear-gradient(90deg, var(--tertiary-on), var(--tertiary));
+  z-index: 600;
+  pointer-events: none;
+  will-change: transform;
+}
+
+/* Reduced motion — honor the OS setting. Collapse decorative motion to
+   instant/opacity, keep everything visible and usable. Required, not optional. */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+  .reveal { opacity: 1 !important; transform: none !important; }
+  .marquee-track { animation: none !important; }
+  .hero-meta, .hero-name, .hero-role, .hero-rule, .hero-desc,
+  .hero-tags, .hero-actions, .hero-visual, .hero-scroll {
+    opacity: 1 !important; animation: none !important; transform: none !important;
+  }
+  .project-card:hover, .research-card:hover, .edu-card:hover { transform: none; }
+  #scroll-progress { display: none; }
 }
