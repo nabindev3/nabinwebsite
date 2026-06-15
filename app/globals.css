@@ -12,7 +12,9 @@
   --on-surface:         #e3e2e2;
   --on-surface-var:     #c4c7c7;
   --outline:            #8e9192;
-  --outline-var:        #444748;
+  /* Softened from #444748 — borders should whisper. Hover states still brighten
+     toward the accent, so quieter resting borders make interaction read clearer. */
+  --outline-var:        #2c2e2e;
   --tertiary:           #b6c4ff;
   --tertiary-on:        #4470ff;
   --primary:            #c8c6c5;
@@ -29,8 +31,14 @@
   /* Easing — exponential ease-outs for snappy, weighty motion (no bounce). */
   --ease-out-expo:      cubic-bezier(0.16, 1, 0.3, 1);
   --ease-out-quint:     cubic-bezier(0.22, 1, 0.36, 1);
-  /* Tinted shadow tuned to the cool tertiary so elevation matches the palette. */
-  --shadow-lift:        0 18px 40px -20px rgba(68, 112, 255, 0.45), 0 6px 14px -8px rgba(0, 0, 0, 0.6);
+  /* Neutral, soft elevation — depth without a colored glow (kept deliberately
+     restrained so lifts read as "quiet and expensive", not AI-glow). */
+  --shadow-lift:        0 16px 40px -24px rgba(0, 0, 0, 0.75);
+  /* Hairline — one subtle divider tone used everywhere borders are needed. */
+  --hairline:           rgba(255, 255, 255, 0.07);
+  /* Quiet chip surface — replaces outlined boxes on pills/badges/tags. */
+  --chip:               rgba(255, 255, 255, 0.045);
+  --chip-hover:         rgba(255, 255, 255, 0.09);
 }
 
 *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
@@ -49,17 +57,6 @@ body {
 ::-webkit-scrollbar-track { background: var(--surface-lowest); }
 ::-webkit-scrollbar-thumb { background: var(--outline-var); }
 ::-webkit-scrollbar-thumb:hover { background: var(--tertiary); }
-
-/* Noise overlay */
-body::after {
-  content: '';
-  position: fixed;
-  inset: 0;
-  pointer-events: none;
-  z-index: 9999;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.025'/%3E%3C/svg%3E");
-  opacity: 0.4;
-}
 
 /* Cursor — position + scale driven entirely by transform in Cursor.jsx
    (translate3d for the lerped follow, scale for hover/press). Sizing via
@@ -230,10 +227,6 @@ nav.site-nav.compact { padding: 1rem var(--gutter); }
 }
 .hero-grid {
   position: absolute; inset: 0;
-  background-image:
-    linear-gradient(rgba(180,196,255,.022) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(180,196,255,.022) 1px, transparent 1px);
-  background-size: 80px 80px;
   pointer-events: none;
 }
 #hero-dots {
@@ -344,16 +337,16 @@ nav.site-nav.compact { padding: 1rem var(--gutter); }
 }
 .hero-tag-chip {
   padding: 0.3rem 0.8rem;
-  border: 1px solid var(--outline-var);
+  border: 1px solid transparent;
   font-size: 0.72rem;
   font-weight: 600;
   letter-spacing: 0.06em;
   text-transform: uppercase;
-  color: var(--outline);
-  background: transparent;
-  transition: border-color var(--transition), color var(--transition);
+  color: var(--on-surface-var);
+  background: var(--chip);
+  transition: background var(--transition), color var(--transition);
 }
-.hero-tag-chip:hover { border-color: var(--tertiary); color: var(--tertiary); }
+.hero-tag-chip:hover { background: var(--chip-hover); color: var(--on-surface); }
 .hero-actions {
   display: flex;
   gap: 1rem;
@@ -526,14 +519,17 @@ section:not(#hero) > * {
 }
 .about-text p strong { color: var(--on-surface); font-weight: 500; }
 .about-blockquote {
-  border-left: 2px solid var(--tertiary-on);
-  padding: 1rem 1.5rem;
-  background: rgba(68,112,255,.06);
-  margin: 2rem 0;
-  font-size: 0.95rem;
-  color: var(--on-surface-var);
-  font-style: italic;
-  line-height: 1.8;
+  border-left: 1px solid var(--hairline);
+  padding: 0.15rem 0 0.15rem 1.75rem;
+  margin: 2.5rem 0;
+  font-family: var(--font-head);
+  font-size: 1.2rem;
+  font-weight: 400;
+  color: var(--on-surface);
+  font-style: normal;
+  line-height: 1.55;
+  letter-spacing: -0.01em;
+  max-width: 56ch;
 }
 .about-badges {
   display: flex; flex-wrap: wrap; gap: 0.6rem;
@@ -541,24 +537,21 @@ section:not(#hero) > * {
 }
 .badge {
   padding: 0.35rem 0.9rem;
-  border: 1px solid var(--outline-var);
+  border: 1px solid transparent;
+  background: var(--chip);
   font-size: 0.78rem;
   color: var(--on-surface-var);
 }
 .stats-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 1px;
-  background: var(--outline-var);
-  border: 1px solid var(--outline-var);
+  column-gap: 2.5rem;
   margin-top: 3rem;
 }
 .stat-item {
-  background: var(--surface-low);
-  padding: 1.75rem;
-  transition: background var(--transition);
+  padding: 1.5rem 0;
+  border-top: 1px solid var(--hairline);
 }
-.stat-item:hover { background: var(--surface-container); }
 .stat-num {
   font-family: var(--font-head);
   font-size: 2rem;
@@ -816,16 +809,16 @@ section:not(#hero) > * {
 .tl-tags { display: flex; flex-wrap: wrap; gap: 0.5rem; }
 .tl-tag {
   padding: 0.3rem 0.8rem;
-  border: 1px solid var(--outline-var);
+  border: 1px solid transparent;
   font-size: 0.7rem;
   font-weight: 600;
   letter-spacing: 0.06em;
   text-transform: uppercase;
-  color: var(--outline);
-  background: transparent;
-  transition: border-color var(--transition), color var(--transition);
+  color: var(--on-surface-var);
+  background: var(--chip);
+  transition: background var(--transition), color var(--transition);
 }
-.tl-tag:hover { border-color: var(--tertiary); color: var(--tertiary); }
+.tl-tag:hover { background: var(--chip-hover); color: var(--on-surface); }
 .tl-ref {
   display: inline-flex;
   align-items: center;
@@ -932,13 +925,13 @@ section:not(#hero) > * {
   border-radius: 2px;
 }
 .project-result {
-  padding: 1rem 1.25rem;
-  background: rgba(180,196,255,.05);
-  border-left: 2px solid var(--tertiary);
+  padding: 0.9rem 1.1rem;
+  background: var(--chip);
   font-size: 0.9rem;
   color: var(--on-surface-var);
   line-height: 1.6;
   margin: 0.75rem 0;
+  border-radius: 2px;
 }
 .project-stack {
   display: flex;
@@ -948,13 +941,13 @@ section:not(#hero) > * {
 }
 .pill {
   padding: 0.3rem 0.7rem;
-  border: 1px solid var(--outline-var);
+  border: 1px solid transparent;
   font-size: 0.7rem;
-  color: var(--outline);
-  background: transparent;
-  transition: border-color var(--transition), color var(--transition);
+  color: var(--on-surface-var);
+  background: var(--chip);
+  transition: background var(--transition), color var(--transition);
 }
-.pill:hover { border-color: var(--tertiary); color: var(--tertiary); }
+.pill:hover { background: var(--chip-hover); color: var(--on-surface); }
 .project-links { display: flex; gap: 1rem; flex-wrap: wrap; align-items: center; }
 .proj-link {
   font-size: 0.78rem;
@@ -970,14 +963,12 @@ section:not(#hero) > * {
 .kpi-row {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-  gap: 1px;
-  background: var(--outline-var);
-  border: 1px solid var(--outline-var);
-  margin-bottom: 1.25rem;
+  column-gap: 1.5rem;
+  margin-bottom: 1.5rem;
 }
 .kpi-cell {
-  background: var(--surface-low);
-  padding: 1rem 0.85rem;
+  padding: 0.85rem 0.5rem 0.85rem 0;
+  border-top: 1px solid var(--hairline);
   text-align: center;
 }
 .kpi-num {
